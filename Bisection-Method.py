@@ -1,3 +1,5 @@
+
+
 def Bisection_Method() -> int: 
     """Function to find the roots of an equation using the Numerical Method of Bisection"""
     # Importing the required libraries
