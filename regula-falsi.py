@@ -1,5 +1,6 @@
 def regulafalsi():
     # Function to find the root of the equation
+    #would be nice to determine the equation in a more general way from user input of the order of the equation.
     def eq(x):
         return x**3 - x -1
     #initial Values
