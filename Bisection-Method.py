@@ -5,17 +5,18 @@ def Bisection_Method() -> int:
 
     # Defining the function whose roots are to be found
     def f(x: float) -> float:
-        return -26 + (85 * x) - (91 * x**2) + 44 * x**3 - 8 * x**4 + x**5
+        # return -26 + (85 * x) - (91 * x**2) + 44 * x**3 - 8 * x**4 + x**5
+        return x+2
 
     # Defining the interval in which the root lies
     # I think this is the maximum and minimum value of the function, if we just take that it only depends on error rate how accurate our
     # roots could be. Need to think more about this. 
 
-    a = 0.5
-    b = 1.0
+    a = -3.0
+    b = 3.0
 
     # Tolerable error
-    e = 0.0001
+    e = 0.0000000000001
 
     # Checking if the initial values are correct
     # this is how we evaluate if out initial values are correct. 
