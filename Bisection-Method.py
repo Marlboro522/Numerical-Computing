@@ -16,7 +16,7 @@ def Bisection_Method() -> int:
     b = 3.0
 
     # Tolerable error
-    e = 0.0000000000001
+    e = 0.0001
 
     # Checking if the initial values are correct
     # this is how we evaluate if out initial values are correct. 
