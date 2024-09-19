@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}  
+\usepackage[margin=1in]{geometry}
+\parindent=0in
+\parskip=8pt
+\usepackage{fancyhdr,amssymb,amsmath, graphicx, listings,float,subfig,enumerate,epstopdf,color,multirow,setspace,bm,textcomp}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+
+\pagestyle{fancy}
+%\linespread{1.3}
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {2.3ex \@plus.2ex}%
+                                  {\normalfont\large\bfseries}}
+\makeatother
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {2.3ex \@plus.2ex}%
+                                  {\normalfont\large\bfseries}}
+\makeatother
+
+\def\deg{\operatorname{ deg }}
+\def\Span{\operatorname{ span }}
+\def\trace{\operatorname{ trace }}
+\def\floor{\operatorname{ floor }}
+\def\sgn{\operatorname{ sgn }}
+\newcommand{\inner}[1]{\langle #1 \rangle}
+\newcommand{\qed}{\hfill $\square$ }
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\m}[1]{\mathbf{ #1 }}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\red}[1]{{\color{red} \textbf{#1}}}
+\newcommand{\blue}[1]{{\color{Blue} \textbf{#1}}}
+\newcommand{\that}{\textasciicircum}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\begin{document} 
+
+\lhead{Homework \#1}
+\chead{}
+\rhead{Fall 2024}
+
+\begin{center}\begin{Large}
+CS 4600/5600 Numerical Computing
+
+Homework \#1
+
+\end{Large}
+\end{center}
+
+\section*{Submission requirements:}
+\begin{itemize}
+\item Submit your work in \textbf{PDF} format to the appropriate assignment on Canvas. Do \textbf{NOT} submit a .zip file. 
+\item You are responsible for making sure that all pages are included, they are legible, and can be accessed. 
+\item All answers should be supported with appropriate work to receive full credit
+\item Any work that is not your own or that doesn't follow the material presented in lecture \textbf{MUST} be cited so that your source can be verified. Sources that can not be verified will result in a zero (0) for that problem. At most, $10\%$ of your assignment can be from outside sources. 
+\item For questions that ask for Python programs/scripts, you may use any language of your choice. All programs will be uploaded through canvas as part of the assignment submission.
+\item For questions that state to use analytical methods, it is expected that the work will be completed "by hand".
+\item Fully typed and illustrated submitted assignments will receive a 5\% extra credit bonus.
+\end{itemize}
+
+\section*{Assignment:}
+
+\begin{enumerate}
+    \item \textit{Roots: Bracketing Methods} Given the function
+    \begin{center}
+        $f(x)=-12-21x+18x^2-2.75x^3$
+    \end{center}
+        \begin{enumerate}
+            \item Determine the roots graphically using a Python script.
+            \item Write a python script to find the first root (farthest left on the number line) of the function with the following two methods (i) and (ii). Pick reasonable initial guesses and either an iteration limit of 20 or an error criterion of 0.1%.
+            \begin{enumerate}
+                \item bisection method
+                \item false position method
+            \end{enumerate}
+        \item Compare your results in (bi) and (bii)
+        \end{enumerate}
+    \item \textit{Roots: Open Methods} Determine the largest positive root of
+        \begin{center}
+        $f(x)=x^3-6x^2+11x-6.1$
+        \end{center}
+        \begin{enumerate}
+            \item Graphically (python script)
+            \item Using the Newton-Raphson method, three iterations, with $x_0=3.5,$ (analytically)
+            \item Using the modified secant method, five iterations, with $x_0=3.5$ and $\delta=0.01$ (analytically)
+            \item Find all the roots using any of the methods discussed (Python)
+            \item Comment on your results
+        \end{enumerate}
+	\item \textit{Roots: Open Methods} The polynomial $f(x)=0.0074x^4-0.284x^3+3.355x^2-12.183x+5$ has a real root between 15 and 20. Apply the Newton-Raphson method (using Python) to this function to find the root using an initial guess of $x_0=16.15$. Explain your results.
+	\item \textit{Optimization} Employ the following methods to find the maximum of  
+        \begin{center} 
+        $f(x)=4x-1.8x^2+1.2x^3-0.3x^4$ 
+        \end{center}
+	\begin{enumerate}
+		\item Plot the function (Python)
+		\item Use analytical methods to prove that the function is concave for all values of x
+		\item Differentiate the function (analytically) and then use a root-location method discussed in lecture (Python) to solve for the maximum $f(x)$ and the corresponding value of \textit{x}.
+		\item Write a program to solve for the value of \textit{x} using the golden-section search. Employ initial guesses of $x_l=0, x_u=2$ and $\varepsilon_s=1\%$. 
+		\item Write a program to solve for the value of \textit{x} using parabolic interpolation. Employ initial guesses of $x_1=0, x_2=1,$ and $x_3=2$.
+	\end{enumerate}
+
+    \item \textit{Optimization} Consider the function $f:\mathbb{R}^2 \rightarrow \mathbb{R}$ defined by
+        \begin{center}
+            $f(x)=\frac{1}{2}(x_1^2 - x_2)^2 + \frac{1}{2}(1-x_1)^2$
+        \end{center}
+        \begin{enumerate}
+            \item At what point does $f$ attain a minimum?
+            \item Perform one iteration of Newton's method (analytically) for minimizing $f$ using as starting point $\begin{bmatrix} 2 & 2 \end{bmatrix}^T$
+        \item In what sense is this a good step?
+        \item In what sense is this a bad step?
+        \end{enumerate}
+\end{enumerate}
+
+\section*{Graduate Students}
+This section is for graduate students only (CS5600). 
+\begin{enumerate}
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Picture2.png}
+    \end{figure}
+    \item As depicted in the figure, a mobile fire hose projects a stream of water onto the roof of a building. Analytically derive an equation that determines the length of roof that can be watered. Then, write a program to find at what angle $\theta$, and how far from the building, $x_1$ should the hose be anchored in order to maximize the coverage of the roof, that is, to maximize the distance, $x_2 - x_1$? Note that, due to hose dimensions and delivery pressure, the water velocity leaving a typical fire hose nozzle has a constant value of $15 m/s$ regardless of the angle. For this particular problem, other parameter values are $h_1 = 0.6 m, h_2 = 10 m,$ and $L=0.4 m$. \textit{Hint:} Coverage is maximized for the water trajectory that just clears the front edge of the roof. That is, we want to choose an $x_1$ and $\theta$ so that the front edge is cleared while maximizing $x_2 - x_1$.
+
+\end{enumerate}
+
+
+\end{document}
+
