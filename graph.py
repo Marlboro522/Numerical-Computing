@@ -90,13 +90,14 @@ def newton_raphson(func, dfunc, x0, tol=1e-6, max_iter=3):
         if abs(x_new - x) < tol:
             return x_new
         x = x_new
+        print(x_new)
     return x
 
 def dg(x):
     return 3*x**2 - 12*x + 11
 
 root_newton = newton_raphson(g, dg, 3.5)
-print(f"Root found by Newton-Raphson Method: {root_newton}")
+print(f"Root found by Newton-Raphson Method for problem 2: {root_newton}")
     
 def h(x):
     return 0.0074*x**4 - 0.284*x**3 + 3.355*x**2 - 12.183*x + 5
