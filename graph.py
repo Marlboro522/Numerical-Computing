@@ -110,3 +110,94 @@ root_newton_h = newton_raphson(h, dh, 16.15)
 print(f"Root found by Newton-Raphson Method: {root_newton_h}")
 
 
+"""Problem 4"""
+
+def f_opt(x):
+    return 4*x - 1.8*x**2 + 1.2*x**3 - 0.3*x**4
+
+# Define the range of x values
+x_values = np.linspace(-1, 3, 400)
+y_values = f_opt(x_values)
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+plt.plot(x_values, y_values, label='f(x) = 4x - 1.8x^2 + 1.2x^3 - 0.3x^4')
+plt.axhline(0, color='black', linewidth=0.5, linestyle='--')
+plt.axvline(0, color='black', linewidth=0.5, linestyle='--')
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('Plot of f(x) = 4x - 1.8x^2 + 1.2x^3 - 0.3x^4')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+def df_opt(x):
+    return 4 - 3.6*x + 3.6*x**2 - 1.2*x**3
+
+roots_opt = fsolve(df_opt, [0, 1, 2])
+print(f"Critical points found: {roots_opt}")
+
+
+"""Golden SEction Search"""
+
+def golden_section_search(func, a, b, tol=1e-2):
+    phi = (1 + np.sqrt(5)) / 2
+    resphi = 2 - phi
+    x1 = a + resphi * (b - a)
+    x2 = b - resphi * (b - a)
+    f1 = func(x1)
+    f2 = func(x2)
+    while abs(b - a) > tol:
+        if f1 < f2:
+            b = x2
+            x2 = x1
+            x1 = a + resphi * (b - a)
+            f2 = f1
+            f1 = func(x1)
+        else:
+            a = x1
+            x1 = x2
+            x2 = b - resphi * (b - a)
+            f1 = f2
+            f2 = func(x2)
+    return (a + b) / 2
+
+x_golden = golden_section_search(f_opt, 0, 2)
+print(f"Maximum found by Golden Section Search: {x_golden}")
+
+
+"""Parabolic Interpolation"""
+
+def parabolic_interpolation(func, x1, x2, x3, tol=1e-2):
+    def fit_parabola(x1, x2, x3):
+        f1, f2, f3 = func(x1), func(x2), func(x3)
+        denom = (x1 - x2) * (x1 - x3) * (x2 - x3)
+        A = (x3 * (f2 - f1) + x2 * (f1 - f3) + x1 * (f3 - f2)) / denom
+        B = (x3**2 * (f1 - f2) + x2**2 * (f3 - f1) + x1**2 * (f2 - f3)) / denom
+        C = (x2 * x3 * (x2 - x3) * f1 + x3 * x1 * (x3 - x1) * f2 + x1 * x2 * (x1 - x2) * f3) / denom
+        return A, B, C
+
+    iter_count = 0
+    while abs(x3 - x1) > tol and iter_count < 100:
+        A, B, C = fit_parabola(x1, x2, x3)
+        x_new = -B / (2 * A)
+        if x_new < x2:
+            if func(x_new) < func(x2):
+                x3 = x2
+                x2 = x_new
+            else:
+                x1 = x_new
+        else:
+            if func(x_new) < func(x2):
+                x1 = x2
+                x2 = x_new
+            else:
+                x3 = x_new
+        iter_count += 1
+    return x2
+
+x_parabolic = parabolic_interpolation(f_opt, 0, 1, 2)
+print(f"Maximum found by Parabolic Interpolation: {x_parabolic}")
+
+
+

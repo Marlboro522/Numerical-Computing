@@ -1,137 +1,368 @@
-\documentclass[11pt]{article}  
-\usepackage[margin=1in]{geometry}
-\parindent=0in
-\parskip=8pt
-\usepackage{fancyhdr,amssymb,amsmath, graphicx, listings,float,subfig,enumerate,epstopdf,color,multirow,setspace,bm,textcomp}
-\usepackage[usenames,dvipsnames]{xcolor}
-\usepackage{hyperref}
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, graphicx}
 
-\pagestyle{fancy}
-%\linespread{1.3}
-\makeatletter
-\renewcommand\section{\@startsection{section}{1}{\z@}%
-                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
-                                  {2.3ex \@plus.2ex}%
-                                  {\normalfont\large\bfseries}}
-\makeatother
+\title{CS 4600/5600 Numerical Computing\\ Homework 1}
+\author{Student Name}
+\date{Fall 2024}
 
-\makeatletter
-\renewcommand\section{\@startsection{section}{1}{\z@}%
-                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
-                                  {2.3ex \@plus.2ex}%
-                                  {\normalfont\large\bfseries}}
-\makeatother
+\begin{document}
 
-\def\deg{\operatorname{ deg }}
-\def\Span{\operatorname{ span }}
-\def\trace{\operatorname{ trace }}
-\def\floor{\operatorname{ floor }}
-\def\sgn{\operatorname{ sgn }}
-\newcommand{\inner}[1]{\langle #1 \rangle}
-\newcommand{\qed}{\hfill $\square$ }
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\F}{\mathbb{F}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\B}{\mathcal{B}}
-\newcommand{\m}[1]{\mathbf{ #1 }}
-\newcommand{\tb}[1]{\textbf{#1}}
-\newcommand{\red}[1]{{\color{red} \textbf{#1}}}
-\newcommand{\blue}[1]{{\color{Blue} \textbf{#1}}}
-\newcommand{\that}{\textasciicircum}
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\argmin}{arg\,min}
+\maketitle
 
-\begin{document} 
+\section*{Problem 2: Roots - Open Methods}
 
-\lhead{Homework \#1}
-\chead{}
-\rhead{Fall 2024}
+\subsection*{(b) Newton-Raphson Method}
 
-\begin{center}\begin{Large}
-CS 4600/5600 Numerical Computing
+Given the function:
+\[
+f(x) = x^3 - 6x^2 + 11x - 6.1
+\]
 
-Homework \#1
+We need to determine the largest positive root using the Newton-Raphson method, starting with \(x_0 = 3.5\).
 
-\end{Large}
-\end{center}
+The Newton-Raphson iteration formula is:
+\[
+x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+\]
 
-\section*{Submission requirements:}
-\begin{itemize}
-\item Submit your work in \textbf{PDF} format to the appropriate assignment on Canvas. Do \textbf{NOT} submit a .zip file. 
-\item You are responsible for making sure that all pages are included, they are legible, and can be accessed. 
-\item All answers should be supported with appropriate work to receive full credit
-\item Any work that is not your own or that doesn't follow the material presented in lecture \textbf{MUST} be cited so that your source can be verified. Sources that can not be verified will result in a zero (0) for that problem. At most, $10\%$ of your assignment can be from outside sources. 
-\item For questions that ask for Python programs/scripts, you may use any language of your choice. All programs will be uploaded through canvas as part of the assignment submission.
-\item For questions that state to use analytical methods, it is expected that the work will be completed "by hand".
-\item Fully typed and illustrated submitted assignments will receive a 5\% extra credit bonus.
-\end{itemize}
+First, we find the derivative of \(f(x)\):
+\[
+f'(x) = 3x^2 - 12x + 11
+\]
 
-\section*{Assignment:}
+Starting with \(x_0 = 3.5\):
+\[
+f(3.5) = (3.5)^3 - 6(3.5)^2 + 11(3.5) - 6.1 = 0.775
+\]
+\[
+f'(3.5) = 3(3.5)^2 - 12(3.5) + 11 = 1.75
+\]
 
-\begin{enumerate}
-    \item \textit{Roots: Bracketing Methods} Given the function
-    \begin{center}
-        $f(x)=-12-21x+18x^2-2.75x^3$
-    \end{center}
-        \begin{enumerate}
-            \item Determine the roots graphically using a Python script.
-            \item Write a python script to find the first root (farthest left on the number line) of the function with the following two methods (i) and (ii). Pick reasonable initial guesses and either an iteration limit of 20 or an error criterion of 0.1%.
-            \begin{enumerate}
-                \item bisection method
-                \item false position method
-            \end{enumerate}
-        \item Compare your results in (bi) and (bii)
-        \end{enumerate}
-    \item \textit{Roots: Open Methods} Determine the largest positive root of
-        \begin{center}
-        $f(x)=x^3-6x^2+11x-6.1$
-        \end{center}
-        \begin{enumerate}
-            \item Graphically (python script)
-            \item Using the Newton-Raphson method, three iterations, with $x_0=3.5,$ (analytically)
-            \item Using the modified secant method, five iterations, with $x_0=3.5$ and $\delta=0.01$ (analytically)
-            \item Find all the roots using any of the methods discussed (Python)
-            \item Comment on your results
-        \end{enumerate}
-	\item \textit{Roots: Open Methods} The polynomial $f(x)=0.0074x^4-0.284x^3+3.355x^2-12.183x+5$ has a real root between 15 and 20. Apply the Newton-Raphson method (using Python) to this function to find the root using an initial guess of $x_0=16.15$. Explain your results.
-	\item \textit{Optimization} Employ the following methods to find the maximum of  
-        \begin{center} 
-        $f(x)=4x-1.8x^2+1.2x^3-0.3x^4$ 
-        \end{center}
-	\begin{enumerate}
-		\item Plot the function (Python)
-		\item Use analytical methods to prove that the function is concave for all values of x
-		\item Differentiate the function (analytically) and then use a root-location method discussed in lecture (Python) to solve for the maximum $f(x)$ and the corresponding value of \textit{x}.
-		\item Write a program to solve for the value of \textit{x} using the golden-section search. Employ initial guesses of $x_l=0, x_u=2$ and $\varepsilon_s=1\%$. 
-		\item Write a program to solve for the value of \textit{x} using parabolic interpolation. Employ initial guesses of $x_1=0, x_2=1,$ and $x_3=2$.
-	\end{enumerate}
+First iteration:
+\[
+x_1 = 3.5 - \frac{0.775}{1.75} \approx 3.0571
+\]
 
-    \item \textit{Optimization} Consider the function $f:\mathbb{R}^2 \rightarrow \mathbb{R}$ defined by
-        \begin{center}
-            $f(x)=\frac{1}{2}(x_1^2 - x_2)^2 + \frac{1}{2}(1-x_1)^2$
-        \end{center}
-        \begin{enumerate}
-            \item At what point does $f$ attain a minimum?
-            \item Perform one iteration of Newton's method (analytically) for minimizing $f$ using as starting point $\begin{bmatrix} 2 & 2 \end{bmatrix}^T$
-        \item In what sense is this a good step?
-        \item In what sense is this a bad step?
-        \end{enumerate}
-\end{enumerate}
+Second iteration:
+\[
+f(3.0571) = (3.0571)^3 - 6(3.0571)^2 + 11(3.0571) - 6.1 \approx 0.1123
+\]
+\[
+f'(3.0571) = 3(3.0571)^2 - 12(3.0571) + 11 \approx 1.1714
+\]
+\[
+x_2 = 3.0571 - \frac{0.1123}{1.1714} \approx 2.9612
+\]
 
-\section*{Graduate Students}
-This section is for graduate students only (CS5600). 
-\begin{enumerate}
-    \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{Picture2.png}
-    \end{figure}
-    \item As depicted in the figure, a mobile fire hose projects a stream of water onto the roof of a building. Analytically derive an equation that determines the length of roof that can be watered. Then, write a program to find at what angle $\theta$, and how far from the building, $x_1$ should the hose be anchored in order to maximize the coverage of the roof, that is, to maximize the distance, $x_2 - x_1$? Note that, due to hose dimensions and delivery pressure, the water velocity leaving a typical fire hose nozzle has a constant value of $15 m/s$ regardless of the angle. For this particular problem, other parameter values are $h_1 = 0.6 m, h_2 = 10 m,$ and $L=0.4 m$. \textit{Hint:} Coverage is maximized for the water trajectory that just clears the front edge of the roof. That is, we want to choose an $x_1$ and $\theta$ so that the front edge is cleared while maximizing $x_2 - x_1$.
+Third iteration:
+\[
+f(2.9612) = (2.9612)^3 - 6(2.9612)^2 + 11(2.9612) - 6.1 \approx 0.0053
+\]
+\[
+f'(2.9612) = 3(2.9612)^2 - 12(2.9612) + 11 \approx 1.0783
+\]
+\[
+x_3 = 2.9612 - \frac{0.0053}{1.0783} \approx 2.9563
+\]
 
-\end{enumerate}
+The largest positive root after three iterations is approximately \(x \approx 2.9563\).
 
+\subsection*{(c) Modified Secant Method}
+
+Using the same function \(f(x) = x^3 - 6x^2 + 11x - 6.1\), we apply the modified secant method with \(x_0 = 3.5\) and \(\delta = 0.01\).
+
+The modified secant method iteration formula is:
+\[
+x_{n+1} = x_n - \frac{\delta x_n f(x_n)}{f(x_n + \delta x_n) - f(x_n)}
+\]
+
+First iteration:
+\[
+f(3.5) = 0.775
+\]
+\[
+f(3.5 + 0.01 \cdot 3.5) = f(3.535) = 0.771925
+\]
+\[
+x_1 = 3.5 - \frac{0.01 \cdot 3.5 \cdot 0.775}{0.771925 - 0.775} \approx 3.0357
+\]
+
+Second iteration:
+\[
+f(3.0357) = 0.1087
+\]
+\[
+f(3.0357 + 0.01 \cdot 3.0357) = f(3.0661) = 0.107092
+\]
+\[
+x_2 = 3.0357 - \frac{0.01 \cdot 3.0357 \cdot 0.1087}{0.107092 - 0.1087} \approx 2.9634
+\]
+
+Third iteration:
+\[
+f(2.9634) = 0.0074
+\]
+\[
+f(2.9634 + 0.01 \cdot 2.9634) = f(2.9930) = 0.0068
+\]
+\[
+x_3 = 2.9634 - \frac{0.01 \cdot 2.9634 \cdot 0.0074}{0.0068 - 0.0074} \approx 2.9567
+\]
+
+Fourth iteration:
+\[
+f(2.9567) = 0.0027
+\]
+\[
+f(2.9567 + 0.01 \cdot 2.9567) = f(2.9862) = 0.0026
+\]
+\[
+x_4 = 2.9567 - \frac{0.01 \cdot 2.9567 \cdot 0.0027}{0.0026 - 0.0027} \approx 2.9559
+\]
+
+Fifth iteration:
+\[
+f(2.9559) = 0.0009
+\]
+\[
+f(2.9559 + 0.01 \cdot 2.9559) = f(2.9855) = 0.0008
+\]
+\[
+x_5 = 2.9559 - \frac{0.01 \cdot 2.9559 \cdot 0.0009}{0.0008 - 0.0009} \approx 2.9556
+\]
+
+The largest positive root after five iterations is approximately \(x \approx 2.9556\).
+
+\section*{Problem 4: Optimization}
+
+Given the function:
+\[
+f(x) = 4x - 1.8x^2 + 1.2x^3 - 0.3x^4
+\]
+
+\subsection*{(b) Prove the function is concave for all values of \(x\)}
+
+A function is concave if its second derivative is negative for all values of \(x\).
+
+First, we find the first derivative of \(f(x)\):
+\[
+f'(x) = 4 - 3.6x + 3.6x^2 - 1.2x^3
+\]
+
+Now, we find the second derivative:
+\[
+f''(x) = -3.6 + 7.2x - 3.6x^2
+\]
+
+For \(f''(x)\) to be negative for all values of \(x\), we need to check its sign:
+\[
+f''(x) = -3.6 + 7.2x - 3.6x^2
+\]
+
+Let's analyze the roots of \(f''(x)\):
+\[
+-3.6 + 7.2x - 3.6x^2 = 0
+\]
+\[
+3.6x^2 - 7.2x + 3.6 = 0
+\]
+\[
+x^2 - 2x + 1 = 0
+\]
+\[
+(x - 1)^2 = 0
+\]
+\[
+x = 1
+\]
+
+At \(x = 1\):
+\[
+f''(1) = -3.6 + 7.2(1) - 3.6(1)^2 = -3.6 + 7.2 - 3.6 = 0
+\]
+
+The second derivative is zero at \(x = 1\), so we need to analyze the behavior around \(x = 1\):
+For \(x < 1\), \(f''(x)\) is positive.
+For \(x > 1\), \(f''(x)\) is negative.
+
+Since \(f''(x)\) changes sign, the function is not concave for all values of \(x\).
+
+\subsection*{(c) Differentiate the function and use a root-location method to solve for the maximum \(f(x)\) and the corresponding value of \(x\)}
+
+First, we find the critical points by setting the first derivative to zero:
+\[
+f'(x) = 4 - 3.6x + 3.6x^2 - 1.2x^3 = 0
+\]
+
+We can use the Newton-Raphson method to find the root:
+Starting with \(x_0 = 1\):
+\[
+f'(1) = 4 - 3.6(1) + 3.6(1)^2 - 1.2(1)^3 = 0
+\]
+\[
+f''(1) = -3.6 + 7.2(1) - 3.6(1)^2 = 0
+\]
+
+Since \(f''(1) = 0\), we use the modified Newton-Raphson method:
+\[
+x_{n+1} = x_n - \frac{f'(x_n)}{f''(x_n)}
+\]
+
+Second iteration:
+\[
+f''(0.5) = -3.6 + 7.2(0.5) - 3.6(0.5)^2 = -3.6 + 3.6 - 0.9 = -0.9
+\]
+\[
+x_1 = 0.5 - \frac{f'(0.5)}{f''(0.5)} \approx 0.5
+\]
+
+The maximum \(f(x)\) is at \(x = 1\).
+
+\subsection*{Problem 5: Optimization}
+
+Given the function:
+\[
+f(x_1, x_2) = \frac{1}{2}(x_1^2 - x_2)^2 + \frac{1}{2}(1 - x_1)^2
+\]
+
+\subsection*{(a) Minimum point}
+
+To find the minimum point, we need to find the gradient and set it to zero:
+\[
+\nabla f = \left( \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2} \right) = 0
+\]
+
+First, we find the partial derivatives:
+\[
+\frac{\partial f}{\partial x_1} = 2x_1(x_1^2 - x_2) - (1 - x_1)
+\]
+\[
+\frac{\partial f}{\partial x_2} = -(x_1^2 - x_2)
+\]
+
+Setting the gradient to zero:
+\[
+2x_1(x_1^2 - x_2) - (1 - x_1) = 0
+\]
+\[
+-(x_1^2 - x_2) = 0
+\]
+
+Solving the system of equations, we get:
+\[
+x_1^2 = x_2
+\]
+\[
+2x_1(x_1^2 - x_2) - (1 - x_1) = 0
+\]
+
+Simplifying, we find the minimum point is:
+\[
+(x_1, x_2) = (1, 1)
+\]
+
+\subsection*{(b) Newton's Method Iteration}
+
+Using the starting point \(\begin{pmatrix} 2 \\ 2 \end{pmatrix}\), we perform one iteration of Newton's method for minimizing \(f\).
+
+The Hessian matrix is:
+\[
+H = \begin{pmatrix}
+6x_1^2 - 2x_2 + 1 & -2x_1 \\
+-2x_1 & 1
+\end{pmatrix}
+\]
+
+The gradient at \(\begin{pmatrix} 2 \\ 2 \end{pmatrix}\) is:
+\[
+\nabla f = \begin{pmatrix}
+2x_1(x_1^2 - x_2) - (1 - x_1) \\
+-(x_1^2 - x_2)
+\end{pmatrix}
+= \begin{pmatrix}
+2(2)(4 - 2) - (1 - 2) \\
+-(4 - 2)
+\end{pmatrix}
+= \begin{pmatrix}
+6 \\
+-2
+\end{pmatrix}
+\]
+
+The Hessian at \(\begin{pmatrix} 2 \\ 2 \end{pmatrix}\) is:
+\[
+H = \begin{pmatrix}
+6(2)^2 - 2(2) + 1 & -2(2) \\
+-2(2) & 1
+\end{pmatrix}
+= \begin{pmatrix}
+17 & -4 \\
+-4 & 1
+\end{pmatrix}
+\]
+
+The Newton step is:
+\[
+\Delta x = -H^{-1} \nabla f
+\]
+
+We need to invert the Hessian:
+\[
+H^{-1} = \frac{1}{17 \cdot 1 - (-4)^2} \begin{pmatrix}
+1 & 4 \\
+4 & 17
+\end{pmatrix}
+= \frac{1}{1} \begin{pmatrix}
+1 & 4 \\
+4 & 17
+\end{pmatrix}
+= \begin{pmatrix}
+1 & 4 \\
+4 & 17
+\end{pmatrix}
+\]
+
+The Newton step is:
+\[
+\Delta x = - \begin{pmatrix}
+1 & 4 \\
+4 & 17
+\end{pmatrix} \begin{pmatrix}
+6 \\
+-2
+\end{pmatrix}
+= - \begin{pmatrix}
+1 \cdot 6 + 4 \cdot (-2) \\
+4 \cdot 6 + 17 \cdot (-2)
+\end{pmatrix}
+= - \begin{pmatrix}
+6 - 8 \\
+24 - 34
+\end{pmatrix}
+= - \begin{pmatrix}
+-2 \\
+-10
+\end{pmatrix}
+= \begin{pmatrix}
+2 \\
+10
+\end{pmatrix}
+\]
+
+The new point after one iteration is:
+\[
+\begin{pmatrix}
+2 \\
+2
+\end{pmatrix}
++ \begin{pmatrix}
+2 \\
+10
+\end{pmatrix}
+= \begin{pmatrix}
+4 \\
+12
+\end{pmatrix}
+\]
 
 \end{document}
-
