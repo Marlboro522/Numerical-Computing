@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import fsolve
 
 # Define the function
 def f(x):
@@ -19,7 +20,7 @@ plt.ylabel('f(x)')
 plt.title('Plot of f(x) = -12 - 21x + 18x^2 - 2.75x^3')
 plt.legend()
 plt.grid(True)
-plt.show()
+plt.savefig('graph1.png')
 
 """Implementations of the roots Bracketing methods here. """
 def bisection_method(func, a, b, tol=0.1, i_max=20):
@@ -79,7 +80,7 @@ plt.ylabel('f(x)')
 plt.title('Plot of f(x) = x^3 - 6x^2 + 11x - 6.1')
 plt.legend()
 plt.grid(True)
-plt.show()
+plt.savefig("graph_2.png")
 
 """ Newton Raphson Method """
 
@@ -129,11 +130,12 @@ plt.ylabel('f(x)')
 plt.title('Plot of f(x) = 4x - 1.8x^2 + 1.2x^3 - 0.3x^4')
 plt.legend()
 plt.grid(True)
-plt.show()
+plt.savefig("grapj_3.png")
 
 def df_opt(x):
     return 4 - 3.6*x + 3.6*x**2 - 1.2*x**3
 
+#for findign the toors of the fucntioon
 roots_opt = fsolve(df_opt, [0, 1, 2])
 print(f"Critical points found: {roots_opt}")
 
@@ -199,5 +201,101 @@ def parabolic_interpolation(func, x1, x2, x3, tol=1e-2):
 x_parabolic = parabolic_interpolation(f_opt, 0, 1, 2)
 print(f"Maximum found by Parabolic Interpolation: {x_parabolic}")
 
+"""Hose Problem"""
+# import numpy as np
+# import scipy.optimize as opt
 
+# # Given values
+# v = 15  
+# g = 9.81  
+# h1 = 0.6 
+# h2 = 10 
+# L = 0.4 
 
+# #maximizing the coverage/
+# def coverage(params):
+#     x1, theta = params
+#     theta_rad = np.radians(theta)
+#     t = (L - x1) / (v * np.cos(theta_rad))
+#     y_t = h1 + v * np.sin(theta_rad) * t - 0.5 * g * t**2
+#     return -(y_t - h2)  # Negative because we use minimize function
+
+# #this can be the constraint
+# def constraint(params):
+#     x1, theta = params
+#     theta_rad = np.radians(theta)
+#     t = (L - x1) / (v * np.cos(theta_rad))
+#     y_t = h1 + v * np.sin(theta_rad) * t - 0.5 * g * t**2
+#     return y_t - h2
+
+# # Initial guesses
+# initial_guess = [0.1, 45]  # x1 = 0.1 m, theta = 45 degrees
+
+# # Bounds for x1 and theta
+# bounds = [(0, L), (0, 90)]
+
+# # Optimization using SLSQP
+# result = opt.minimize(coverage, initial_guess, bounds=bounds, constraints={'type': 'eq', 'fun': constraint}, method='SLSQP')
+
+# # Results
+# x1_opt, theta_opt = result.x
+# x2_opt = L
+# coverage_opt = x2_opt - x1_opt
+
+# print(f"Optimal x1: {x1_opt:.4f} m")
+# print(f"Optimal θ: {theta_opt:.4f} degrees")
+# print(f"Maximum coverage: {coverage_opt:.4f} m")
+
+import numpy as np
+import scipy.optimize as opt
+import matplotlib.pyplot as plt
+
+# Given constants
+v = 15  # m/s
+g = 9.81  # m/s^2
+h1 = 0.6  # m
+h2 = 10  # m
+L = 0.4  # m
+
+# Define the objective function with penalty for constraint violation
+def coverage_with_penalty(params):
+    x1, theta = params
+    theta_rad = np.radians(theta)
+    t = (L - x1) / (v * np.cos(theta_rad))
+    y_t = h1 + v * np.sin(theta_rad) * t - 0.5 * g * t**2
+    penalty = 0
+    if y_t < h2:  # Constraint violation penalty
+        penalty = 1e6 * (h2 - y_t)**2  # Penalty term
+    if not (0 <= x1 <= L):  # x1 out of bounds penalty
+        penalty += 1e6 * (min(0, x1) ** 2 + max(0, x1 - L) ** 2)
+    if not (0 <= theta <= 90):  # theta out of bounds penalty
+        penalty += 1e6 * (min(0, theta) ** 2 + max(0, theta - 90) ** 2)
+    return -(y_t - h2) + penalty  # Negative because we use minimize function
+
+# Initial guesses
+initial_guess = [0.1, 45]  # x1 = 0.1 m, theta = 45 degrees
+
+# Bounds for x1 and theta (note: Nelder-Mead does not support bounds natively, but we can manually enforce them)
+bounds = [(0, L), (0, 90)]
+
+# Custom function to enforce bounds manually
+def enforce_bounds(params):
+    x1, theta = params
+    x1 = np.clip(x1, bounds[0][0], bounds[0][1])
+    theta = np.clip(theta, bounds[1][0], bounds[1][1])
+    return [x1, theta]
+
+# Optimization using Nelder-Mead (Simplex) method
+result = opt.minimize(lambda params: coverage_with_penalty(enforce_bounds(params)), initial_guess, method='Nelder-Mead')
+
+# Enforce bounds on the result
+x1_opt = np.clip(result.x[0], 0, L)
+theta_opt = np.clip(result.x[1], 0, 90)
+x2_opt = L
+coverage_opt = x2_opt - x1_opt
+
+print(f"Optimal x1: {x1_opt:.4f} m")
+print(f"Optimal θ: {theta_opt:.4f} degrees")
+print(f"Maximum coverage: {coverage_opt:.4f} m")
+
+#Not really sure abot the results, a simmulationn woul dbe useful.

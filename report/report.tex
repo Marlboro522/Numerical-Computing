@@ -2,7 +2,7 @@
 \usepackage{amsmath, amssymb, graphicx}
 
 \title{CS 4600/5600 Numerical Computing\\ Homework 1}
-\author{Student Name}
+\author{Raja}
 \date{Fall 2024}
 
 \begin{document}
@@ -22,7 +22,7 @@ We need to determine the largest positive root using the Newton-Raphson method, 
 
 The Newton-Raphson iteration formula is:
 \[
-x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+x_{i+1} = x_i - \frac{f(x_i)}{f'(x_i)}
 \]
 
 First, we find the derivative of \(f(x)\):
@@ -32,40 +32,40 @@ f'(x) = 3x^2 - 12x + 11
 
 Starting with \(x_0 = 3.5\):
 \[
-f(3.5) = (3.5)^3 - 6(3.5)^2 + 11(3.5) - 6.1 = 0.775
+f(3.5) = (3.5)^3 - 6(3.5)^2 + 11(3.5) - 6.1 = 1.775
 \]
 \[
-f'(3.5) = 3(3.5)^2 - 12(3.5) + 11 = 1.75
+f'(3.5) = 3(3.5)^2 - 12(3.5) + 11 = 5.75
 \]
 
 First iteration:
 \[
-x_1 = 3.5 - \frac{0.775}{1.75} \approx 3.0571
+x_1 = 3.5 - \frac{1.775}{5.75} \approx 3.1913043
 \]
 
 Second iteration:
 \[
-f(3.0571) = (3.0571)^3 - 6(3.0571)^2 + 11(3.0571) - 6.1 \approx 0.1123
+f(3.1913043)  \approx 0.399408
 \]
 \[
-f'(3.0571) = 3(3.0571)^2 - 12(3.0571) + 11 \approx 1.1714
+f'(3.1913043)  \approx 3.2576178
 \]
 \[
-x_2 = 3.0571 - \frac{0.1123}{1.1714} \approx 2.9612
+x_2 \approx 3.068698
 \]
 
 Third iteration:
 \[
-f(2.9612) = (2.9612)^3 - 6(2.9612)^2 + 11(2.9612) - 6.1 \approx 0.0053
+f(3.068698) = (3.068698)^3 - 6(3.068698)^2 + 11(3.068698) - 6.1 \approx 0.0518784
 \]
 \[
-f'(2.9612) = 3(2.9612)^2 - 12(2.9612) + 11 \approx 1.0783
+f'(3.068698) = 3(3.068698)^2 - 12(3.068698) + 11 \approx 2.426346
 \]
 \[
-x_3 = 2.9612 - \frac{0.0053}{1.0783} \approx 2.9563
+x_3 = 3.068698 - \frac{0.518784}{2.426346} \approx 3.0473166
 \]
 
-The largest positive root after three iterations is approximately \(x \approx 2.9563\).
+The largest positive root after three iterations is approximately \(x \approx 3.0473166\).
 
 \subsection*{(c) Modified Secant Method}
 
@@ -73,65 +73,29 @@ Using the same function \(f(x) = x^3 - 6x^2 + 11x - 6.1\), we apply the modified
 
 The modified secant method iteration formula is:
 \[
-x_{n+1} = x_n - \frac{\delta x_n f(x_n)}{f(x_n + \delta x_n) - f(x_n)}
+x_{i+1} = x_n - \frac{\delta x_i f(x_i)}{f(x_i + \delta x_i) - f(x_i)}
 \]
 
-First iteration:
-\[
-f(3.5) = 0.775
-\]
-\[
-f(3.5 + 0.01 \cdot 3.5) = f(3.535) = 0.771925
-\]
-\[
-x_1 = 3.5 - \frac{0.01 \cdot 3.5 \cdot 0.775}{0.771925 - 0.775} \approx 3.0357
-\]
+\begin{center}
+    \begin{tabular}{||c c c||} 
+     \hline
+     Iteration & $x_i$ & $x_{i+1}$ \\ [0.5ex] 
+     \hline\hline
+     0 & 3.5 & 3.1995967\\ 
+     \hline
+     1 & 3.1995967 & 3.0753234  \\
+     \hline
+     2 & 3.0753234 & 3.04881822 \\
+     \hline
+     3 & 3.04881822 & 3.0467729 \\
+     \hline
+     4 & 3.0467729 & 3.0466842863 \\
+     \hline
+    \end{tabular}
+\end{center}
 
-Second iteration:
-\[
-f(3.0357) = 0.1087
-\]
-\[
-f(3.0357 + 0.01 \cdot 3.0357) = f(3.0661) = 0.107092
-\]
-\[
-x_2 = 3.0357 - \frac{0.01 \cdot 3.0357 \cdot 0.1087}{0.107092 - 0.1087} \approx 2.9634
-\]
-
-Third iteration:
-\[
-f(2.9634) = 0.0074
-\]
-\[
-f(2.9634 + 0.01 \cdot 2.9634) = f(2.9930) = 0.0068
-\]
-\[
-x_3 = 2.9634 - \frac{0.01 \cdot 2.9634 \cdot 0.0074}{0.0068 - 0.0074} \approx 2.9567
-\]
-
-Fourth iteration:
-\[
-f(2.9567) = 0.0027
-\]
-\[
-f(2.9567 + 0.01 \cdot 2.9567) = f(2.9862) = 0.0026
-\]
-\[
-x_4 = 2.9567 - \frac{0.01 \cdot 2.9567 \cdot 0.0027}{0.0026 - 0.0027} \approx 2.9559
-\]
-
-Fifth iteration:
-\[
-f(2.9559) = 0.0009
-\]
-\[
-f(2.9559 + 0.01 \cdot 2.9559) = f(2.9855) = 0.0008
-\]
-\[
-x_5 = 2.9559 - \frac{0.01 \cdot 2.9559 \cdot 0.0009}{0.0008 - 0.0009} \approx 2.9556
-\]
-
-The largest positive root after five iterations is approximately \(x \approx 2.9556\).
+The largest positive root after five iterations \\
+is approximately \(x \approx 3.0466842863\).
 
 \section*{Problem 4: Optimization}
 
@@ -182,41 +146,10 @@ f''(1) = -3.6 + 7.2(1) - 3.6(1)^2 = -3.6 + 7.2 - 3.6 = 0
 \]
 
 The second derivative is zero at \(x = 1\), so we need to analyze the behavior around \(x = 1\):
-For \(x < 1\), \(f''(x)\) is positive.
+For \(x < 1\), \(f''(x)\) is negative.
 For \(x > 1\), \(f''(x)\) is negative.
 
-Since \(f''(x)\) changes sign, the function is not concave for all values of \(x\).
-
-\subsection*{(c) Differentiate the function and use a root-location method to solve for the maximum \(f(x)\) and the corresponding value of \(x\)}
-
-First, we find the critical points by setting the first derivative to zero:
-\[
-f'(x) = 4 - 3.6x + 3.6x^2 - 1.2x^3 = 0
-\]
-
-We can use the Newton-Raphson method to find the root:
-Starting with \(x_0 = 1\):
-\[
-f'(1) = 4 - 3.6(1) + 3.6(1)^2 - 1.2(1)^3 = 0
-\]
-\[
-f''(1) = -3.6 + 7.2(1) - 3.6(1)^2 = 0
-\]
-
-Since \(f''(1) = 0\), we use the modified Newton-Raphson method:
-\[
-x_{n+1} = x_n - \frac{f'(x_n)}{f''(x_n)}
-\]
-
-Second iteration:
-\[
-f''(0.5) = -3.6 + 7.2(0.5) - 3.6(0.5)^2 = -3.6 + 3.6 - 0.9 = -0.9
-\]
-\[
-x_1 = 0.5 - \frac{f'(0.5)}{f''(0.5)} \approx 0.5
-\]
-
-The maximum \(f(x)\) is at \(x = 1\).
+ \(f''(x)\) doesn't change sign, the function is concave for all values of \(x\).
 
 \subsection*{Problem 5: Optimization}
 
@@ -227,39 +160,23 @@ f(x_1, x_2) = \frac{1}{2}(x_1^2 - x_2)^2 + \frac{1}{2}(1 - x_1)^2
 
 \subsection*{(a) Minimum point}
 
-To find the minimum point, we need to find the gradient and set it to zero:
+To find the minimum point, we need to find the Hessian Matrix:
 \[
-\nabla f = \left( \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2} \right) = 0
+% H = \left( \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2} \right) = 0
+H = \begin{pmatrix}
+6x_1^2 - 2x_2 + 1 & -2x_1 \\
+-2x_1 & 1
+\end{pmatrix}
 \]
 
-First, we find the partial derivatives:
-\[
-\frac{\partial f}{\partial x_1} = 2x_1(x_1^2 - x_2) - (1 - x_1)
-\]
-\[
-\frac{\partial f}{\partial x_2} = -(x_1^2 - x_2)
-\]
-
-Setting the gradient to zero:
-\[
-2x_1(x_1^2 - x_2) - (1 - x_1) = 0
-\]
-\[
--(x_1^2 - x_2) = 0
-\]
-
-Solving the system of equations, we get:
-\[
-x_1^2 = x_2
-\]
-\[
-2x_1(x_1^2 - x_2) - (1 - x_1) = 0
-\]
-
-Simplifying, we find the minimum point is:
+Simplifying, we find the critical point is:
 \[
 (x_1, x_2) = (1, 1)
 \]
+
+After substituing the \((x_1, x_2)\) as (1,1) the \(\det{H}\) is greater than 0.
+
+Therefore, the critical point is the minimum point of the function.
 
 \subsection*{(b) Newton's Method Iteration}
 
@@ -273,6 +190,16 @@ H = \begin{pmatrix}
 \end{pmatrix}
 \]
 
+The gradient matrix would be \(\begin{pmatrix}
+    \frac{\partial f} { \partial x_1} \\
+    \frac{\partial f}  {\partial x_2}
+\end{pmatrix}\)
+\\ 
+\(
+    \frac{\partial f} {\partial x_1} = 2x_1(x_1^2 - x_2) - (1 - x_1) \\
+    \frac{\partial f}  {\partial x_2} = -(x_1^2 - x_2)
+\)
+
 The gradient at \(\begin{pmatrix} 2 \\ 2 \end{pmatrix}\) is:
 \[
 \nabla f = \begin{pmatrix}
@@ -284,7 +211,7 @@ The gradient at \(\begin{pmatrix} 2 \\ 2 \end{pmatrix}\) is:
 -(4 - 2)
 \end{pmatrix}
 = \begin{pmatrix}
-6 \\
+9 \\
 -2
 \end{pmatrix}
 \]
@@ -296,7 +223,7 @@ H = \begin{pmatrix}
 -2(2) & 1
 \end{pmatrix}
 = \begin{pmatrix}
-17 & -4 \\
+21 & -4 \\
 -4 & 1
 \end{pmatrix}
 \]
@@ -307,47 +234,56 @@ The Newton step is:
 \]
 
 We need to invert the Hessian:
+
+Formula:
 \[
-H^{-1} = \frac{1}{17 \cdot 1 - (-4)^2} \begin{pmatrix}
-1 & 4 \\
-4 & 17
-\end{pmatrix}
-= \frac{1}{1} \begin{pmatrix}
-1 & 4 \\
-4 & 17
-\end{pmatrix}
-= \begin{pmatrix}
-1 & 4 \\
-4 & 17
+H^{-1} = \frac{1}{ad - bc} \begin{pmatrix}
+d & -b \\
+-c & a
 \end{pmatrix}
 \]
 
-The Newton step is:
 \[
-\Delta x = - \begin{pmatrix}
+H^{-1} = \frac{1}{21 \cdot 1 - (-4 \cdot -4)} \begin{pmatrix}
 1 & 4 \\
-4 & 17
-\end{pmatrix} \begin{pmatrix}
-6 \\
--2
+4 & 21
 \end{pmatrix}
-= - \begin{pmatrix}
-1 \cdot 6 + 4 \cdot (-2) \\
-4 \cdot 6 + 17 \cdot (-2)
-\end{pmatrix}
-= - \begin{pmatrix}
-6 - 8 \\
-24 - 34
-\end{pmatrix}
-= - \begin{pmatrix}
--2 \\
--10
+= \frac{1}{5} \begin{pmatrix}
+1 & 4 \\
+4 & 21
 \end{pmatrix}
 = \begin{pmatrix}
-2 \\
-10
+0.2 & 0.8 \\
+0.8 & 4.2
 \end{pmatrix}
 \]
+
+The Newton step is:\\
+$
+\Delta x = - \begin{pmatrix}
+0.2 & 0.8 \\
+0.8 & 4.2
+\end{pmatrix} \begin{pmatrix}
+9 \\
+-2
+\end{pmatrix}\\
+= - \begin{pmatrix}
+ 0.2 \cdot 9 + 0.8 \cdot (-2) \\
+ 0.8 \cdot 9+ 4.2\cdot (-2)
+\end{pmatrix}\\
+= - \begin{pmatrix}
+1.8 -1.6 \\
+7.2 -8.4
+\end{pmatrix}\\
+= - \begin{pmatrix}
+0.2 \\
+-1.2
+\end{pmatrix}\\
+= \begin{pmatrix}
+-0.2 \\
+1.2
+\end{pmatrix}
+$
 
 The new point after one iteration is:
 \[
@@ -356,13 +292,38 @@ The new point after one iteration is:
 2
 \end{pmatrix}
 + \begin{pmatrix}
-2 \\
-10
+-0.2 \\
+1.2
 \end{pmatrix}
 = \begin{pmatrix}
-4 \\
-12
+1.8\\
+2.2
 \end{pmatrix}
 \]
 
+To determine if this is a good step or a bad one, we need to evaluate the function at this new point,
+and see how closer it is the point we found as minima which is \((1,1)\)\\
+if \(f(1.8,2.2) < f(2,2)\) then it would be a good step because\\
+\(
+    f(1.8,2.2) = \frac{1}{2}(1.8^2 - 2.2)^2 + \frac{1}{2}(1 - 1.8)^2 = 0.02 \\
+    f(2,2) = \frac{1}{2}(2^2 - 2)^2 + \frac{1}{2}(1 - 2)^2 = 1\\
+    f(1,1) = \frac{1}{2}(1^2 - 1)^2 + \frac{1}{2}(1 - 1)^2 = 0
+    \)
+\paragraph*{Sense of why it is good step: }When we evaluate the function with the given values, we can see that new values are making the function to near 0, which is the minimum value at point (1,1) \\
+Therefore, the new point is a good step in this sense.
+
+\paragraph*{Sense of why this could be a bad step: }By lookinng at just the values of of \(x_1\) and \(x_2\) we can see that \(x_2\) value increased \\
+There is an 
+
+\section*{Graduate Problem: }
+\paragraph*{My understandding:}
+The projectile motion is parabolic and should pass thorough the point, \((x,h2)\) inorder to clear the roof. 
+The hint says the coverage is maximized when the water just clears the height of the roof, which is h2. 
+
+The equation of the projectile motion is given by:
+\(y = \tan\theta(x) - \frac{gx^2}{2(ucos\theta)^2}\).
+I need to think about this analytically. 
+
+Ok, so this is a two dimenstional function, 
+Intuition says if the angle goes over 45, the water would be nearing 0 on x-axis. 
 \end{document}

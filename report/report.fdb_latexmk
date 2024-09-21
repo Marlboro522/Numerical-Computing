@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1726874740 "/Users/ilu/Numerical-Computing/report/report.tex" "report.pdf" "report" 1726874741
-  "/Users/ilu/Numerical-Computing/report/report.tex" 1726874740 6779 a9ad2f7da3ccb4d135b4cfb5d1d21339 ""
+["pdflatex"] 1726914320 "/Users/ilu/Numerical-Computing/report/report.tex" "report.pdf" "report" 1726914321
+  "/Users/ilu/Numerical-Computing/report/report.tex" 1726914320 7117 e3068194d573f9b976388ce809736f80 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -26,6 +26,7 @@
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1248133631 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
@@ -54,8 +55,8 @@
   "/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1647878959 4410336 7d30a02e9fa9a16d7d1f8d037ba69641 ""
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1675935376 2826433 e62d3a7ca9ba6d578ecf636493d157cd ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
-  "report.aux" 1726874741 32 77e0dffd05b653a64f0caf3eb9bb454a "pdflatex"
-  "report.tex" 1726874740 6779 a9ad2f7da3ccb4d135b4cfb5d1d21339 ""
+  "report.aux" 1726914321 32 77e0dffd05b653a64f0caf3eb9bb454a "pdflatex"
+  "report.tex" 1726914320 7117 e3068194d573f9b976388ce809736f80 ""
   (generated)
   "report.aux"
   "report.log"
