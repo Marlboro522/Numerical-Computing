@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
-
+import scipy.optimize as opt
 # Define the function
 def f(x):
     return -12 - 21*x + 18*x**2 - 2.75*x**3
@@ -84,14 +84,14 @@ plt.savefig("graph_2.png")
 
 """ Newton Raphson Method """
 
-def newton_raphson(func, dfunc, x0, tol=1e-6, max_iter=3):
+def newton_raphson(func, dfunc, x0, tol=1e-6, max_iter=20):
     x = x0
     for _ in range(max_iter):
         x_new = x - func(x) / dfunc(x)
         if abs(x_new - x) < tol:
             return x_new
         x = x_new
-        print(x_new)
+        # print(x_new)
     return x
 
 def dg(x):
@@ -137,7 +137,7 @@ def df_opt(x):
 
 #for findign the toors of the fucntioon
 roots_opt = fsolve(df_opt, [0, 1, 2])
-print(f"Critical points found: {roots_opt}")
+# print(f"Critical points found: {roots_opt}")
 
 
 """Golden SEction Search"""
@@ -164,13 +164,14 @@ def golden_section_search(func, a, b, tol=1e-2):
             f2 = func(x2)
     return (a + b) / 2
 
-x_golden = golden_section_search(f_opt, 0, 2)
+x_golden = golden_section_search(f_opt, -2, 4)
 print(f"Maximum found by Golden Section Search: {x_golden}")
 
 
 """Parabolic Interpolation"""
 
 def parabolic_interpolation(func, x1, x2, x3, tol=1e-2):
+    #unnscarambled. 
     def fit_parabola(x1, x2, x3):
         f1, f2, f3 = func(x1), func(x2), func(x3)
         denom = (x1 - x2) * (x1 - x3) * (x2 - x3)
@@ -198,104 +199,47 @@ def parabolic_interpolation(func, x1, x2, x3, tol=1e-2):
         iter_count += 1
     return x2
 
-x_parabolic = parabolic_interpolation(f_opt, 0, 1, 2)
+x_parabolic = parabolic_interpolation(f_opt, 1.75, 2, 2.5)
 print(f"Maximum found by Parabolic Interpolation: {x_parabolic}")
 
 """Hose Problem"""
-# import numpy as np
-# import scipy.optimize as opt
 
-# # Given values
-# v = 15  
-# g = 9.81  
-# h1 = 0.6 
-# h2 = 10 
-# L = 0.4 
+v = 15  
+g = 9.81 
+h1 = 0.6 
+h2 = 10  
+L = 0.4  
 
-# #maximizing the coverage/
-# def coverage(params):
-#     x1, theta = params
-#     theta_rad = np.radians(theta)
-#     t = (L - x1) / (v * np.cos(theta_rad))
-#     y_t = h1 + v * np.sin(theta_rad) * t - 0.5 * g * t**2
-#     return -(y_t - h2)  # Negative because we use minimize function
+def y_position(x1, theta):
+    theta_rad = np.radians(theta)
+    x_total = x1 - L  # since L is where the stream starts. 
+    return h1 + x_total * np.tan(theta_rad) - (g * x_total**2) / (2 * v**2 * np.cos(theta_rad)**2)
 
-# #this can be the constraint
-# def constraint(params):
-#     x1, theta = params
-#     theta_rad = np.radians(theta)
-#     t = (L - x1) / (v * np.cos(theta_rad))
-#     y_t = h1 + v * np.sin(theta_rad) * t - 0.5 * g * t**2
-#     return y_t - h2
+def constraint(params):
+    x1, theta = params
+    return y_position(x1, theta) - h2  #since the height has to exceed 10m. 
 
-# # Initial guesses
-# initial_guess = [0.1, 45]  # x1 = 0.1 m, theta = 45 degrees
-
-# # Bounds for x1 and theta
-# bounds = [(0, L), (0, 90)]
-
-# # Optimization using SLSQP
-# result = opt.minimize(coverage, initial_guess, bounds=bounds, constraints={'type': 'eq', 'fun': constraint}, method='SLSQP')
-
-# # Results
-# x1_opt, theta_opt = result.x
-# x2_opt = L
-# coverage_opt = x2_opt - x1_opt
-
-# print(f"Optimal x1: {x1_opt:.4f} m")
-# print(f"Optimal θ: {theta_opt:.4f} degrees")
-# print(f"Maximum coverage: {coverage_opt:.4f} m")
-
-import numpy as np
-import scipy.optimize as opt
-import matplotlib.pyplot as plt
-
-# Given constants
-v = 15  # m/s
-g = 9.81  # m/s^2
-h1 = 0.6  # m
-h2 = 10  # m
-L = 0.4  # m
-
-# Define the objective function with penalty for constraint violation
-def coverage_with_penalty(params):
+def coverage_objective(params):
     x1, theta = params
     theta_rad = np.radians(theta)
-    t = (L - x1) / (v * np.cos(theta_rad))
-    y_t = h1 + v * np.sin(theta_rad) * t - 0.5 * g * t**2
-    penalty = 0
-    if y_t < h2:  # Constraint violation penalty
-        penalty = 1e6 * (h2 - y_t)**2  # Penalty term
-    if not (0 <= x1 <= L):  # x1 out of bounds penalty
-        penalty += 1e6 * (min(0, x1) ** 2 + max(0, x1 - L) ** 2)
-    if not (0 <= theta <= 90):  # theta out of bounds penalty
-        penalty += 1e6 * (min(0, theta) ** 2 + max(0, theta - 90) ** 2)
-    return -(y_t - h2) + penalty  # Negative because we use minimize function
+    t_flight = (v * np.sin(theta_rad) + np.sqrt((v * np.sin(theta_rad))**2 + 2 * g * h1)) / g
+    x2 = x1 + v * np.cos(theta_rad) * t_flight
+    # print(-(x2-x1))
+    return -(x2 - x1)
 
-# Initial guesses
-initial_guess = [0.1, 45]  # x1 = 0.1 m, theta = 45 degrees
 
-# Bounds for x1 and theta (note: Nelder-Mead does not support bounds natively, but we can manually enforce them)
-bounds = [(0, L), (0, 90)]
+initial_guess = [5, 15] 
+bounds = [(0, 20), (0, 90)] 
+constraints = {'type': 'ineq', 'fun': constraint}  #ineq beacuse we can ensure that the projection is greater than 10m whcih is height of the wall
 
-# Custom function to enforce bounds manually
-def enforce_bounds(params):
-    x1, theta = params
-    x1 = np.clip(x1, bounds[0][0], bounds[0][1])
-    theta = np.clip(theta, bounds[1][0], bounds[1][1])
-    return [x1, theta]
+result = opt.minimize(coverage_objective, initial_guess, method='SLSQP', constraints=constraints, bounds=bounds)
 
-# Optimization using Nelder-Mead (Simplex) method
-result = opt.minimize(lambda params: coverage_with_penalty(enforce_bounds(params)), initial_guess, method='Nelder-Mead')
+x1_opt = result.x[0]
+theta_opt = result.x[1]
 
-# Enforce bounds on the result
-x1_opt = np.clip(result.x[0], 0, L)
-theta_opt = np.clip(result.x[1], 0, 90)
-x2_opt = L
-coverage_opt = x2_opt - x1_opt
 
+print(result.message)
 print(f"Optimal x1: {x1_opt:.4f} m")
 print(f"Optimal θ: {theta_opt:.4f} degrees")
-print(f"Maximum coverage: {coverage_opt:.4f} m")
 
 #Not really sure abot the results, a simmulationn woul dbe useful.
