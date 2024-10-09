@@ -1,5 +1,13 @@
 import numpy as np
 
+
+
+########
+"""Check the document once to see if all the python requirements are satisfied."""
+########
+
+# function to implement Gauss-Seidel method to solve linear system Ax = b
+
 def gauss_seidel(A, b, tol=0.05, max_iterations=100):
     x = np.zeros(len(b))
     n = len(b)
@@ -14,6 +22,7 @@ def gauss_seidel(A, b, tol=0.05, max_iterations=100):
             break
     return x, iteration+1
 
+
 A = np.array([[10, 2, -1], [-3, -6, 2], [1, 1, 5]], dtype=float)
 b = np.array([27, -61.5, -21.5], dtype=float)
 
@@ -21,6 +30,9 @@ solution, iterations = gauss_seidel(A, b)
 print(f"Solution: {solution}")
 print(f"Iterations: {iterations}")
 
+
+
+###Concerning Eigen values. ####
 
 #function to find Eigen values of 3x3 matrix
 
@@ -59,3 +71,8 @@ print(f"Largest eigenvalue Estimation(Power method): {largest_eigenvalue}")
 # Inverse power method to find the smallest eigenvalue
 smallest_eigenvalue, _ = inverse_power_method(A, num_iterations)
 print(f"Smallest eigenvalue Estimation(Inverse power method): {smallest_eigenvalue}")
+
+
+###Concerning Reactors problen####
+#you got the equations, and you also need to go deeper into LU factorization and mmake it less messy to comprehend. 
+###Formulation of the equations for three reaction when k is 0.1 per minute is also done, Double check the equations. 
