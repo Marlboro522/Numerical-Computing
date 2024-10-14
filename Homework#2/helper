@@ -1,0 +1,32 @@
+def equation(x,y):
+    print(y + (x **2) -x -0.75)
+    print((x**2)-y-1)
+print(equation(1.21839988,0.48271025839 ))
+
+# import numpy as np
+
+# # Define the functions
+# def F(x):
+#     return np.array([x[1] + x[0]**2 - x[0] - 0.75, x[0]**2 - x[1] - 1])
+
+# # Define the Jacobian
+# def J(x):
+#     return np.array([[2*x[0] - 1, 1], [2*x[0], -1]])
+
+# # Newton-Raphson method for a system of nonlinear equations
+# def newton_raphson_system(F, J, x0, tol=1e-5, max_iter=3):
+#     x = np.array(x0, dtype=float)
+#     for i in range(max_iter):
+#         delta = np.linalg.solve(J(x), -F(x))
+#         x = x + delta
+#         print(f"Iteration {i+1}: x = {x}")
+#         if np.linalg.norm(delta) < tol:
+#             break
+#     return x
+
+# # Initial guess
+# x0 = [1.2, 1.2]
+
+# # Solve using Newton-Raphson method
+# solution = newton_raphson_system(F, J, x0)
+# print(f"Solution after 3 iterations: {solution}")

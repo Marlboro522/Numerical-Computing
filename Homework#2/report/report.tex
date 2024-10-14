@@ -36,36 +36,9 @@ Assume initial guesses: \( x_1 = 0, x_2 = 0, x_3 = 0 \).
 1st iteration:
 \begin{align*}
 x_1^{(1)} &= \frac{27 - 2(0) + 0}{10} = 2.7 \\
-x_2^{(1)} &= \frac{-61.5 + 3(2.7) - 2(0)}{-6} = 11.85 \\
-x_3^{(1)} &= \frac{-21.5 - 2.7 - 11.85}{5} = -7.61
+x_2^{(1)} &= \frac{-61.5 + 3(2.7) - 2(0)}{-6} = 8.9 \\
+x_3^{(1)} &= \frac{-21.5 - 2.7 - 8.9}{5} = -6.62
 \end{align*}
-
-% \subsection*{(b) Python script to solve using Gauss-Seidel until the relative error falls below 5\%}
-
-% \begin{lstlisting}[language=Python]
-% import numpy as np
-
-% def gauss_seidel(A, b, tol=0.05, max_iterations=100):
-%     x = np.zeros(len(b))
-%     n = len(b)
-%     for iteration in range(max_iterations):
-%         x_old = x.copy()
-%         for i in range(n):
-%             sum_ax = sum(A[i][j] * x[j] for j in range(n) if j != i)
-%             x[i] = (b[i] - sum_ax) / A[i][i]
-%         # Compute relative error
-%         relative_error = np.max(np.abs((x - x_old) / x))
-%         if relative_error < tol:
-%             break
-%     return x, iteration+1
-
-% A = np.array([[10, 2, -1], [-3, -6, 2], [1, 1, 5]], dtype=float)
-% b = np.array([27, -61.5, -21.5], dtype=float)
-
-% solution, iterations = gauss_seidel(A, b)
-% print(f"Solution: {solution}")
-% print(f"Iterations: {iterations}")
-% \end{lstlisting}
 
 \section*{Problem 2: Newton-Raphson Method for Nonlinear Equations}
 
@@ -110,85 +83,111 @@ f_2(1.2, 1.2) &= 1.44 - 1.2 - 1 = -0.76
 
 Solve for \( \Delta x, \Delta y \):
 \[
-J^{-1} = \frac{1}{-3.4 - 2.4} \begin{bmatrix} -1 & -1 \\ -2.4 & 1.4 \end{bmatrix}
+J^{-1} = \frac{1}{-1.4 - 2.4} \begin{bmatrix} -1 & -1 \\ -2.4 & 1.4 \end{bmatrix}
+\]
+\[
+J^{-1} = \begin{bmatrix} 0.2631 & 0.2631 \\ 0.6315 & -0.3684 \end{bmatrix}
+\]
+\[
+\Delta = J^{-1} \begin{bmatrix} 0.69 \\ -0.76 \end{bmatrix} = \begin{bmatrix} -0.018417 \\ 0.715719 \end{bmatrix}
 \]
 
 \[
-\Delta = J^{-1} \begin{bmatrix} 0.69 \\ -0.76 \end{bmatrix} = \begin{bmatrix} 0.28 \\ -0.32 \end{bmatrix}
+\begin{bmatrix} x_{k+1} \\ y_{k+1} \end{bmatrix} = \begin{bmatrix} 1.2 \\ 1.2 \end{bmatrix} - \begin{bmatrix} -0.018417 \\ 0.715719 \end{bmatrix} = \begin{bmatrix} 1.218417 \\ 0.484281 \end{bmatrix}
 \]
 
+2nnd iteration:
+   \begin{align*}
+      J(1.218417, 0.484281) &= \begin{bmatrix} 1.436834 & 1 \\ 2.436834 & -1 \end{bmatrix} \\
+      f_1(1.218417, 0.484281) &=  0.00040298588900022914\\
+      f_2(1.218417, 0.484281) &= 0.0002599858890002249
+   \end{align*}
+Solve for \( \Delta x, \Delta y \):
 \[
-\begin{bmatrix} x_{k+1} \\ y_{k+1} \end{bmatrix} = \begin{bmatrix} 1.2 \\ 1.2 \end{bmatrix} - \begin{bmatrix} 0.28 \\ -0.32 \end{bmatrix} = \begin{bmatrix} 0.92 \\ 1.52 \end{bmatrix}
+J^{-1} = \begin{bmatrix} 0.258153242 & 0.258153242 \\ 0.6290766271 & -0.3709233729 \end{bmatrix}
+\]
+% \[
+% J^{-1} = \begin{bmatrix} 0.2631 & 0.2631 \\ 0.6315 & -0.3684 \end{bmatrix}
+% \]
+\[
+\Delta = J^{-1} \begin{bmatrix} 0.00040298588900022914 \\ 0.0002599858890002249 \end{bmatrix} = \begin{bmatrix} 0.00017114831384532148789
+   \\ 0.00015707416096679070974\end{bmatrix}
+\]
+\[
+\begin{bmatrix} x_{k+1} \\ y_{k+1} \end{bmatrix} = \begin{bmatrix} 1.218417 \\ 0.484281 \end{bmatrix} - \begin{bmatrix} 0.00017114831384532148789 \\ 0.00015707416096679070974 \end{bmatrix} = \begin{bmatrix}  1.218399885 \\ 0.48271025839 \end{bmatrix}
 \]
 
-Subsequent iterations follow similarly.
-
-% \subsection*{Python Implementation}
-
-% \begin{lstlisting}[language=Python]
-% import numpy as np
-
-% def newton_raphson_system(F, J, x0, tol=1e-5, max_iter=10):
-%     x = np.array(x0, dtype=float)
-%     for _ in range(max_iter):
-%         delta = np.linalg.solve(J(x), -F(x))
-%         x = x + delta
-%         if np.linalg.norm(delta) < tol:
-%             break
-%     return x
-
-% # Define the functions
-% def F(x):
-%     return np.array([x[1] + x[0]**2 - x[0] - 0.75, x[0]**2 - x[1] - 1])
-
-% # Define the Jacobian
-% def J(x):
-%     return np.array([[2*x[0] - 1, 1], [2*x[0], -1]])
-
-% # Initial guess
-% x0 = [1.2, 1.2]
-
-% # Solve using Newton-Raphson method
-% solution = newton_raphson_system(F, J, x0)
-% print(f"Solution: {solution}")
-% \end{lstlisting}
+3rd iteration:
+\begin{align*}
+   J(1.218399885, 0.48271025839) &= \begin{bmatrix} 1.467997 & 1 \\ 2.4367997 & -1 \end{bmatrix} \\
+   f_1(1.21839988, 0.48271025839) &= -0.0011913540259855804\\
+   f_2(1.21839988, 0.48271025839) &= 0.0017880091940143394
+   \end{align*}
+   
+   Solve for \( \Delta x, \Delta y \):
+   \[
+   J^{-1} =\begin{bmatrix} 0.258157826 & 0.258157826 \\ 0.629078913 & -0.370921087 \end{bmatrix}
+   \]
+   \[
+   \Delta = J^{-1} \begin{bmatrix} -0.0011913540259855804 \\ 0.0017880091940143394 \end{bmatrix} = \begin{bmatrix} 0.00015403120104996912892 \\ -0.0014126660094749753355 \end{bmatrix}
+   \]
+   
+   \[
+   \begin{bmatrix} x_{k+1} \\ y_{k+1} \end{bmatrix} = \begin{bmatrix} 1.218399885 \\ 0.48271025839 \end{bmatrix} - \begin{bmatrix} 0.00015403120104996912892 \\ -0.0014126660094749753355  \end{bmatrix} = \begin{bmatrix} 1.2182458537989500308 \\ 0.4841229243994749754 \end{bmatrix}
+   \]
+   
 
 \section*{Problem 3: LU Factorization and Matrix Inverse}
 
-Given matrix:
-\[ A = \begin{pmatrix} 1 & 1 & 1 \\ 2 & 2 & 5 \\ 4 & 6 & 8 \end{pmatrix} \]
-\[ b = \begin{pmatrix} 1 \\ 2 \\ 4 \end{pmatrix} \]
+\subsection*{(a) Mass Balances for Reactors 2 and 3}
+For reactor 2:
+\[
+-Q_{21} c_2 + Q_{12} c_1 - Q_{23} c_2 + Q_{32} c_3 - k V_2 c_2 = 0
+\]
+For reactor 3:
+\[
+-Q_{31} c_3 + Q_{13} c_1 - Q_{32} c_3 + Q_{23} c_2 - k V_3 c_3 = 0
+\]
 
-% \subsection*{LU Decomposition and Solving for Concentrations}
+\subsection*{(b) Mass Balances for All Reactors}
+Combine the equations for all reactors:
+\[
+\begin{aligned}
+Q_{in} c_{in} - (Q_{12} + Q_{13} + k V_1) c_1 + Q_{21} c_2 + Q_{31} c_3 &= 0 \\
+Q_{12} c_1 - (Q_{21} + Q_{23} + k V_2) c_2 + Q_{32} c_3 &= 0 \\
+Q_{13} c_1 + Q_{23} c_2 - (Q_{31} + Q_{32} + k V_3) c_3 &= 0 \\
+\end{aligned}
+\]
 
-% \begin{lstlisting}[language=Python]
-% import numpy as np
-% from scipy.linalg import lu, solve
+\subsection*{(c) LU Factorization}
+The system in matrix form is \( A\mathbf{c} = \mathbf{b} \).
 
-% # Coefficient matrix A
-% A = np.array([
-%     [1, 1, 1],
-%     [2, 2, 5],
-%     [4, 6, 8]
-% ], dtype=float)
+\[
+A = \begin{bmatrix}
+-(Q_{12} + Q_{13} + k V_1) & Q_{21} & Q_{31} \\
+Q_{12} & -(Q_{21} + Q_{23} + k V_2) & Q_{32} \\
+Q_{13} & Q_{23} & -(Q_{31} + Q_{32} + k V_3) \\
+\end{bmatrix}
+\]
+\[
+\mathbf{b} = \begin{bmatrix}
+-Q_{in} c_{in} \\
+0 \\
+0 \\
+\end{bmatrix}
+\]
 
-% # Right-hand side vector b
-% b = np.array([1, 2, 4], dtype=float)
+Factorization is done in the python file script.py
+\subsection*{(d) Answer Questions Using Matrix Inverse}
+Values belowar are respective to reactor 1, 2, and 3.\\
+(i) Steady-state concentrations:\\
+73.62497731 62.00762389 67.4532583 \\
 
-% # Perform LU decomposition
-% P, L, U = lu(A)
+(ii) If the inflow in the second reactor is set to zero:\\
+73.62497731 62.00762389 67.4532583 \\
 
-% print("L:\n", L)
-% print("U:\n", U)
-
-% # Solve Ly = b using forward substitution
-% y = solve(L, b, lower=True)
-
-% # Solve Ux = y using backward substitution
-% x = solve(U, y)
-
-% print("Solution x (concentrations):\n", x)
-% \end{lstlisting}
+(iii) If the inflow concentration to reactor 1 is doubled and reactor 2 is halved:\\
+147.24995462 124.01524778 134.90651661
 
 \section*{Problem 4: Gauss Elimination}
 
@@ -198,8 +197,96 @@ Given system:
 \[ 5x_1 - 2x_2 = 3 \]
 
 \subsection*{(a) Compute the determinant analytically.}
+The matrix would be: 
 
+\[ \begin{pmatrix} 0 & -3 & 7 \\ 1 & 2 & -1 \\ 5 & -2 & 0 \end{pmatrix} \]
+
+\[
+   \det(A) = 0 \cdot \begin{vmatrix} 2 & -1 \\ -2 & 0 \end{vmatrix} - (-3) \cdot \begin{vmatrix} 1 & -1 \\ 5 & 0 \end{vmatrix} + 7 \cdot \begin{vmatrix} 1 & 2 \\ 5 & -2 \end{vmatrix} = -69
+\]
 \subsection*{(b) Solve using Cramer's rule.}
+we replace the first column with to get the matrix \( A_1 \) for \( x_1 \):
+\[\begin{pmatrix}
+   4 & -3 & 7 \\ 0 & 2 & -1 \\ 3 & -2 & 0
+\end{pmatrix}\]
+\[
+   x_1 = \frac{\det(A_1)}{\det(A)} = 0.59420
+\]
+we replace the second column with to get the matrix \( A_2 \) for \( x_2 \):
+\[\begin{pmatrix}
+   0 & 4 & 7 \\ 1 & 0 & -1 \\ 5 & 3 & 0
+\end{pmatrix}\]
+\[
+   x_2 = \frac{\det(A_2)}{\det(A)} = -0.14493
+\]
+we replace the third column with to get the matrix \( A_3 \) for \( x_3 \):
+\[\begin{pmatrix}
+   0 & -3 & 4 \\ 1 & 2 & 0 \\ 5 & -2 & 3
+\end{pmatrix}\]
+\[
+   x_3 = \frac{\det(A_3)}{\det(A)} = 0.56521
+\]
+\subsection{Gaussian Elimination using Partial Pivoting:}
+\[
+   \begin{pmatrix}
+      0 & -3 & 7 & \|4 \\
+      1 & 2 & -1 & \|0 \\
+      5 & -2 & 0 & \|3
+   \end{pmatrix}
+\]
+
+We look at the first column and realize 5 is the largest and do row-swaps to make it the pivot element, which results in the matrix:
+switch the rows 1 and 3 to make the pivot element 5:
+\[
+   \begin{pmatrix}
+      5 & -2 & 0 & \|3 \\
+      1 & 2 & -1 & \|0 \\
+      0 & -3 & 7 & \|4
+   \end{pmatrix}
+\]
+
+
+now, we need the transformation \[r_2 = r_2 - \frac{1}{5}r_1\]
+\[
+   \begin{pmatrix}
+      5 & -2 & 0 & \|3 \\
+      0 & -2.4 & -1 & \|-0.6 \\
+      0 & -3 & 7 & \|4
+   \end{pmatrix}
+\]
+
+Next, we need the transformation \[r_3 = r_3 - \frac{1}{3}r_2\times2.4\]
+\[
+   \begin{pmatrix}
+      5 & -2 & 0 & \|3 \\
+      0 & -3 & 7 & \|4 \\
+      0 & 0 & 4.6 & \|2.6
+   \end{pmatrix}
+\]
+
+Now, we can back-substitute to get the values of \(x_1, x_2, x_3\):
+\[x_3 = \frac{2.6}{4.6} = 0.5652178913\]
+\[x_2 = \frac{4 - 7 \times 0.5652178913}{-3} = -0.1449275362\]
+\[x_1 = \frac{3 + 2 \times 0.1449275362}{5} = 0.5942028986\]
+
+Finding the determinant:
+A=\[
+   \begin{pmatrix}
+      5 & -2 & 0 & \\
+      0 & -3 & 7 & \\
+      0 & 0 & 4.6 &
+   \end{pmatrix}
+\]
+
+\[
+   \det(A) = 5 \times -3 \times 4.6 = -69
+\]
+which is  equal to the derminant found in part (a).
+
+(d) Substitute your results back into the original equations to check your solution:
+\[
+   -3 \times -0.1449275362 + 7 \times 0.5652178913 \approx 4
+\]
 
 \section*{Problem 5: Eigenvalues}
 
@@ -208,51 +295,19 @@ Given matrix:
 
 \subsection*{(a) Determine eigenvalues from characteristic polynomial}
 
-The characteristic polynomial of a matrix \( A \) is given by the determinant of \( A - \lambda I \), where \( \lambda \) is an eigenvalue and \( I \) is the identity matrix.
+we can get the characteristic polynomial of a 3$\times$3 matrix by expanding the below equation: 
 
-\[ \text{det}(A - \lambda I) = 0 \]
+\[\lambda^3-s_1\lambda^2+s_2\lambda-\det A\]
 
-For the given matrix:
-\[ A - \lambda I = \begin{pmatrix} 20 - \lambda & 3 & 2 \\ 3 & 9 - \lambda & 4 \\ 2 & 4 & 12 - \lambda \end{pmatrix} \]
+Where S1 and S2 are the sum of the diagonal elements and sum of principal minors. 
 
-\[ \text{det}(A - \lambda I) = \begin{vmatrix} 20 - \lambda & 3 & 2 \\ 3 & 9 - \lambda & 4 \\ 2 & 4 & 12 - \lambda \end{vmatrix} \]
+Here, \[s_1=41\]
+\[s_2 =108-16 + 240 -4+180-9 = 499\]
+\[\det A = 1744\]
 
-Using cofactor expansion to compute the determinant:
-\[ \text{det}(A - \lambda I) = (20 - \lambda) \begin{vmatrix} 9 - \lambda & 4 \\ 4 & 12 - \lambda \end{vmatrix} - 3 \begin{vmatrix} 3 & 4 \\ 2 & 12 - \lambda \end{vmatrix} + 2 \begin{vmatrix} 3 & 9 - \lambda \\ 2 & 4 \end{vmatrix} \]
-
-\[ = (20 - \lambda) [(9 - \lambda)(12 - \lambda) - 16] - 3 [3(12 - \lambda) - 8] + 2 [3 \cdot 4 - 2(9 - \lambda)] \]
-
-\[ = (20 - \lambda) [108 - 21\lambda + \lambda^2 - 16] - 3 [36 - 3\lambda - 8] + 2 [12 - 18 + 2\lambda] \]
-
-\[ = (20 - \lambda) [\lambda^2 - 21\lambda + 92] - 3 [28 - 3\lambda] + 2 [-6 + 2\lambda] \]
-
-\[ = (20 - \lambda) \lambda^2 - 21\lambda(20 - \lambda) + 92(20 - \lambda) - 84 + 9\lambda - 12 + 4\lambda \]
-
-\[ = 20\lambda^2 - \lambda^3 - 420\lambda + 21\lambda^2 + 1840 - 92\lambda - 84 + 9\lambda - 12 + 4\lambda \]
-
-\[ = -\lambda^3 + 41\lambda^2 - 499\lambda + 1744 \]
-
-% \subsection*{Solve the characteristic polynomial for eigenvalues using Python:}
-
-% \begin{lstlisting}[language=Python]
-% import numpy as np
-% from numpy.linalg import eig
-
-% A = np.array([[20, 3, 2],
-%               [3, 9, 4],
-%               [2, 4, 12]])
-
-% # Calculate eigenvalues and eigenvectors
-% eigenvalues, eigenvectors = eig(A)
-
-% print("Eigenvalues:", eigenvalues)
-% \end{lstlisting}
-
-% Running the code gives the eigenvalues:
-% \[ \lambda_1 = 22.251 \]
-% \[ \lambda_2 = 13.298 \]
-% \[ \lambda_3 = 5.451 \]
-
+The equationw would then become: 
+\[\lambda^3-41\lambda^2+499\lambda- 1744 = 0\]
+Obtained Eingenvalues are 21.72915618 13.18232626  6.08851756
 \subsection*{(b) Use the power method to find the largest eigenvalue and compare this with the result from (a)}
 
 The power method is used to find the largest eigenvalue of a matrix. Perform 3 iterations analytically:
@@ -264,76 +319,22 @@ The power method is used to find the largest eigenvalue of a matrix. Perform 3 i
 \[ y_1 = Ax_0 = \begin{pmatrix} 20 & 3 & 2 \\ 3 & 9 & 4 \\ 2 & 4 & 12 \end{pmatrix} \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix} = \begin{pmatrix} 25 \\ 16 \\ 18 \end{pmatrix} \]
 
 \[ \text{Normalize } y_1: \]
-\[ x_1 = \frac{y_1}{\| y_1 \|} = \frac{1}{\sqrt{25^2 + 16^2 + 18^2}} \begin{pmatrix} 25 \\ 16 \\ 18 \end{pmatrix} = \begin{pmatrix} 0.785 \\ 0.503 \\ 0.566 \end{pmatrix} \]
+\[ 25 \times \begin{pmatrix} 1 \\ 0.64 \\ 0.73 \end{pmatrix} \]
 
 3. **Iteration 2:**
-\[ y_2 = Ax_1 = \begin{pmatrix} 20 & 3 & 2 \\ 3 & 9 & 4 \\ 2 & 4 & 12 \end{pmatrix} \begin{pmatrix} 0.785 \\ 0.503 \\ 0.566 \end{pmatrix} = \begin{pmatrix} 17.698 \\ 9.575 \\ 12.927 \end{pmatrix} \]
+\[ y_2 = Ax_1 = \begin{pmatrix} 20 & 3 & 2 \\ 3 & 9 & 4 \\ 2 & 4 & 12 \end{pmatrix} \begin{pmatrix} 1 \\ 0.64 \\ 0.73 \end{pmatrix} = \begin{pmatrix} 23.36 \\ 11.64 \\ 13.2 \end{pmatrix} \]
 
 \[ \text{Normalize } y_2: \]
-\[ x_2 = \frac{y_2}{\| y_2 \|} = \frac{1}{\sqrt{17.698^2 + 9.575^2 + 12.927^2}} \begin{pmatrix} 17.698 \\ 9.575 \\ 12.927 \end{pmatrix} = \begin{pmatrix} 0.773 \\ 0.418 \\ 0.564 \end{pmatrix} \]
+\[ 23.36 \times \begin{pmatrix} 1 \\ 0.4982876712 \\ 0.5650684932 \end{pmatrix} \]
 
 4. **Iteration 3:**
-\[ y_3 = Ax_2 = \begin{pmatrix} 20 & 3 & 2 \\ 3 & 9 & 4 \\ 2 & 4 & 12 \end{pmatrix} \begin{pmatrix} 0.773 \\ 0.418 \\ 0.564 \end{pmatrix} = \begin{pmatrix} 17.096 \\ 9.097 \\ 12.640 \end{pmatrix} \]
+\[ y_3 = Ax_2 = \begin{pmatrix} 20 & 3 & 2 \\ 3 & 9 & 4 \\ 2 & 4 & 12 \end{pmatrix} \begin{pmatrix} 1 \\ 0.4982876712 \\ 0.5650684932 \end{pmatrix} = \begin{pmatrix} 22.625 \\ 9.744863014 \\ 10.7738726 \end{pmatrix} \]
 
-\[ \text{Normalize } y_3: \]
-\[ x_3 = \frac{y_3}{\| y_3 \|} = \frac{1}{\sqrt{17.096^2 + 9.097^2 + 12.640^2}} \begin{pmatrix} 17.096 \\ 9.097 \\ 12.640 \end{pmatrix} = \begin{pmatrix} 0.773 \\ 0.412 \\ 0.573 \end{pmatrix} \]
+The largest eigenvalue found using the power method is approximately 22.625, which is close to the exact eigenvalue of 22.251 found using the characteristic polynomial.
 
-Using the normalized vector from the third iteration:
-\[ \lambda \approx \frac{y_3 \cdot x_3}{x_3 \cdot x_3} = \frac{(17.096, 9.097, 12.640) \cdot (0.773, 0.412, 0.573)}{(0.773, 0.412, 0.573) \cdot (0.773, 0.412, 0.573)} \approx 22.252 \]
+\subsection*{(c) Use the inverse power method to find the smallest eigenvalue and compare this with the result from (a)}
 
-The largest eigenvalue found using the power method is approximately 22.252, which is close to the exact eigenvalue of 22.251 found using the characteristic polynomial.
+The python script gave the smallest eigen value as 6.088517562501856, which is close to the exact eigenvalue of 6.08852 found using the characteristic polynomial.
 
-% \subsection*{(c) Use the power method to find the smallest eigenvalue and compare this with the result from (a)}
-
-% To find the smallest eigenvalue using the power method, we use the inverse power method.
-
-% \subsection*{Python Script to Find Smallest Eigenvalue:}
-
-% \begin{lstlisting}[language=Python]
-% import numpy as np
-
-% def power_method(A, num_iterations):
-%     b_k = np.random.rand(A.shape[1])
-%     for _ in range(num_iterations):
-%         b_k1 = np.dot(A, b_k)
-%         b_k1_norm = np.linalg.norm(b_k1)
-%         b_k = b_k1 / b_k1_norm
-%     return b_k1_norm, b_k
-
-% def inverse_power_method(A, num_iterations, tol=1e-7):
-%     A_inv = np.linalg.inv(A)
-%     eigenvalue, eigenvector = power_method(A_inv, num_iterations)
-%     eigenvalue = 1 / eigenvalue
-%     return eigenvalue, eigenvector
-
-% A = np.array([[20, 3, 2],
-%               [3, 9, 4],
-%               [2, 4, 12]])
-
-% # Power method to find the largest eigenvalue
-% num_iterations = 3
-% largest_eigenvalue, _ = power_method(A, num_iterations)
-% print(f"Largest eigenvalue (Power method): {largest_eigenvalue}")
-
-% # Inverse power method to find the smallest eigenvalue
-% smallest_eigenvalue, _ = inverse_power_method(A, num_iterations)
-% print(f"Smallest eigenvalue (Inverse power method): {smallest_eigenvalue}")
-
-% # Use NumPy to find all eigenvalues for comparison
-% eigenvalues, _ = np.linalg.eig(A)
-% print("Eigenvalues (NumPy):", eigenvalues)
-% \end{lstlisting}
-
-% This script will compute the largest and smallest eigenvalues using the power method and inverse power method respectively, and compare them with the eigenvalues found using NumPy.
-
-% By running the script, you will get:
-
-% \begin{verbatim}
-% Largest eigenvalue (Power method): 22.252
-% Smallest eigenvalue (Inverse power method): 5.450
-% Eigenvalues (NumPy): [22.251 13.298  5.451]
-% \end{verbatim}
-
-% The smallest eigenvalue found using the inverse power method is approximately 5.450, which is close to the exact eigenvalue of 5.451 found using the characteristic polynomial.
 
 \end{document}
