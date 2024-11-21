@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 # Given data
-T = np.array([273, 283, 293, 303, 313, 323, 333])
-mu = np.array([1.79, 1.51, 1.29, 1.11, 0.97, 0.85, 0.75])
+T = np.array([299.82, 366.48, 422.04, 588.71])
+mu = np.array([1.35,0.085,0.012,0.00075])
 
 # Define the nonlinear model
 def nonlinear_model(T, b0, b1):
