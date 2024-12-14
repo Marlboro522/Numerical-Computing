@@ -2,62 +2,46 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-# Given data
-T = np.array([299.82, 366.48, 422.04, 588.71])
-mu = np.array([1.35,0.085,0.012,0.00075])
-
-# Define the nonlinear model
-def nonlinear_model(T, b0, b1):
+# Define the nonlinear model function
+def viscosity_model(T, b0, b1):
     return b0 * np.exp(b1 / T)
 
-# Perform nonlinear regression
-"""popt: Optimal values for the parameters so that the sum of the squared residuals of f(xdata, *popt) - ydata is minimized."""
-"""pcov: The estimated covariance of popt. The diagonals provide the variance of the parameter estimate."""
-popt, pcov = curve_fit(nonlinear_model, T, mu)
+# Data
+T_C = np.array([26.67, 93.33, 148.89, 315.56])  # Temperatures in °C
+mu = np.array([1.35, 0.085, 0.012, 0.00075])    # Viscosities in Pa·s
+T_K = T_C + 273.15  # Convert to Kelvin
 
-# Extract the parameters
+# Fit the model
+popt, pcov = curve_fit(viscosity_model, T_K, mu)
 b0, b1 = popt
-
-# Calculate predicted values and residuals
-mu_pred = nonlinear_model(T, b0, b1)
+standard_errors = np.sqrt(np.diag(pcov))
+mu_pred = viscosity_model(T_K, *popt)
 residuals = mu - mu_pred
+rss = np.sum(residuals**2)
+sst = np.sum((mu - np.mean(mu))**2)
+r_squared = 1 - rss / sst
 
-# Calculate R^2
-ss_res = np.sum(residuals**2)
-ss_tot = np.sum((mu - np.mean(mu))**2)
-r2 = 1 - (ss_res / ss_tot)
+# Print results
+print(f"Estimated b0: {b0}, b1: {b1}")
+print(f"Standard errors: {standard_errors}")
+print(f"R^2: {r_squared}")
 
-# Standard error of the estimate
-se = np.sqrt(ss_res / (len(mu) - 2))
-
-# Standard error estimates for the parameters
-perr = np.sqrt(np.diag(pcov))
-
-# Print the results
-print(f"Estimated parameters: b0 = {b0:.4f}, b1 = {b1:.4f}")
-print(f"Standard errors: b0 = {perr[0]:.4f}, b1 = {perr[1]:.4f}")
-print(f"R^2: {r2:.4f}")
-print(f"Standard error of the estimate (se): {se:.4f}")
-
-# Plot the data and the model
+# Plotting data and model fit
 plt.figure(figsize=(10, 5))
-plt.scatter(T, mu, label='Data', color='blue')
-plt.plot(T, mu_pred, label='Fitted model', color='red')
+plt.plot(T_K, mu, 'ro', label='Data')
+plt.plot(T_K, mu_pred, 'b-', label=f'Fit: $b_0$={b0:.4f}, $b_1$={b1:.4f}')
 plt.xlabel('Temperature (K)')
 plt.ylabel('Viscosity (Pa·s)')
-plt.title('Viscosity vs Temperature')
+plt.title('Nonlinear Fit to Viscosity Data')
 plt.legend()
-plt.grid(True)
-plt.savefig('viscosity_model.png')
 plt.show()
 
-# Plot residuals vs predicted values
+# Plotting residuals
 plt.figure(figsize=(10, 5))
-plt.scatter(mu_pred, residuals, color='blue')
-plt.axhline(0, color='red', linestyle='--')
-plt.xlabel('Predicted Viscosity (Pa·s)')
+plt.stem(T_K, residuals, linefmt='grey', markerfmt='D', basefmt=" ") 
+plt.xlabel('Temperature (K)')
 plt.ylabel('Residuals (Pa·s)')
-plt.title('Residuals vs Predicted Viscosity')
+plt.title('Residuals of the Nonlinear Fit')
+plt.axhline(y=0, color='r', linestyle='--')
 plt.grid(True)
-plt.savefig('residuals.png')
 plt.show()

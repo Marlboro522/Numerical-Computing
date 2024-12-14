@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Nonlinear Regression Analysis}
+
+Given the model:
+\[
+\mu = b_0 e^{b_1 / T}
+\]
+with initial guesses \(b_0 = 1.5\) and \(b_1 = -500\), we calculate the predicted viscosities and residuals for the temperatures converted from Celsius to Kelvin.
+
+\subsection*{Data Conversion}
+Temperatures in Celsius: [26.67, 93.33, 148.89, 315.56] are converted to Kelvin:
+\[
+T(K) = T(^\circ C) + 273.15
+\]
+Resulting in: [299.82 K, 366.48 K, 422.04 K, 588.71 K].
+
+\subsection*{Calculations}
+\subsubsection*{For \(T = 299.82\) K}
+\[
+\mu_{pred} = 1.5 \times e^{-500 / 299.82} \approx 1.5 \times e^{-1.67} \approx 1.5 \times 0.188 \approx 0.282
+\]
+Residual:
+\[
+1.35 - 0.282 = 1.068
+\]
+Squared Residual:
+\[
+(1.068)^2 = 1.141024
+\]
+
+\subsubsection*{For \(T = 366.48\) K}
+\[
+\mu_{pred} = 1.5 \times e^{-500 / 366.48} \approx 1.5 \times e^{-1.364} \approx 1.5 \times 0.255 \approx 0.383
+\]
+Residual:
+\[
+0.085 - 0.383 = -0.298
+\]
+Squared Residual:
+\[
+(-0.298)^2 = 0.088804
+\]
+
+\subsubsection*{For \(T = 422.04\) K}
+\[
+\mu_{pred} = 1.5 \times e^{-500 / 422.04} \approx 1.5 \times e^{-1.184} \approx 1.5 \times 0.306 \approx 0.459
+\]
+Residual:
+\[
+0.012 - 0.459 = -0.447
+\]
+Squared Residual:
+\[
+(-0.447)^2 = 0.199809
+\]
+
+\subsubsection*{For \(T = 588.71\) K}
+\[
+\mu_{pred} = 1.5 \times e^{-500 / 588.71} \approx 1.5 \times e^{-0.849} \approx 1.5 \times 0.428 \approx 0.642
+\]
+Residual:
+\[
+0.00075 - 0.642 = -0.64125
+\]
+Squared Residual:
+\[
+(-0.64125)^2 = 0.411202
+\]
+
+\subsection*{Sum of Squared Residuals (RSS)}
+\[
+\text{RSS} = 1.141024 + 0.088804 + 0.199809 + 0.411202 = 1.840839
+\]
+
+
+\section*{Analysis of Parameter Estimates and Uncertainty}
+
+\begin{enumerate}
+    \item \textbf{Estimated Parameters:}
+    \begin{itemize}
+        \item \(b_0\) (Scale Factor): \(3.10454 \times 10^{-7}\)
+        \item \(b_1\) (Exponential Decay Constant): 4582.8555
+    \end{itemize}
+    
+    \item \textbf{Standard Errors:}
+    \begin{itemize}
+        \item Standard Error of \(b_0\): \(5.97475 \times 10^{-8}\)
+        \item Standard Error of \(b_1\): 57.7395
+    \end{itemize}
+    
+    \item \textbf{Coefficient of Determination (\(R^2\)):}
+    \begin{itemize}
+        \item \(R^2\): 0.999986
+    \end{itemize}
+\end{enumerate}
+
+\subsection*{Detailed Comments on Uncertainty}
+
+\textbf{Parameter \(b_0\):}
+\begin{itemize}
+    \item The value of \(b_0\) is extremely small (\(3.10454 \times 10^{-7}\)), which suggests that the scale of viscosity change with temperature according to this model is minute. This might indicate that the viscosity at a hypothetical infinitely high temperature (as \(T \rightarrow \infty\), \(e^{b_1/T} \rightarrow 1\), making \(\mu \rightarrow b_0\)) is near zero.
+    \item The relative standard error of \(b_0\), calculated as \(\frac{\text{Standard Error of } b_0}{b_0} \times 100\%\), is approximately 19.25\%. This relatively high percentage (considering the magnitude of the parameter) reflects substantial uncertainty in the estimate of \(b_0\), pointing out that small variations in the data or model could lead to significantly different estimates of \(b_0\).
+\end{itemize}
+
+\textbf{Parameter \(b_1\):}
+\begin{itemize}
+    \item \(b_1\) shows a high sensitivity to temperature changes, as indicated by its large positive value. A larger \(b_1\) makes the decay of the exponential term \(e^{b_1/T}\) much steeper as temperature increases.
+    \item The standard error of \(b_1\) is relatively small compared to its value, indicating a lower percentage of uncertainty compared to \(b_0\). The relative standard error is \(\frac{57.7395}{4582.8555} \times 100\% \approx 1.26\%\). This smaller relative error suggests that \(b_1\) is estimated with higher precision and confidence.
+\end{itemize}
+
+\subsection*{Goodness of Fit (\(R^2\)):}
+\begin{itemize}
+    \item An \(R^2\) value of 0.999986 is extremely close to 1, which suggests that the model explains virtually all the variability in the viscosity data relative to the mean. This high \(R^2\) indicates an excellent fit of the model to the data.
+\end{itemize}
+
+\subsection*{Implications and Considerations:}
+\begin{itemize}
+    \item \textbf{Model Sensitivity:} The large value of \(b_1\) compared to the very small \(b_0\) can make the model highly sensitive to changes in temperature, especially at higher temperatures.
+    \item \textbf{Data Range and Impact:} The effective temperature range and how it influences the viscosity are critical in interpreting these results. The temperature range from 299.82 K to 588.71 K covers significant physical properties changes, especially near critical temperatures where the behavior of fluids can dramatically change.
+    \item \textbf{Practical Implications:} Given the nature of \(b_0\) and its uncertainty, special attention should be given when using this model for predictive purposes at temperatures not covered by the data, as extrapolations might be unreliable.
+\end{itemize}
+
+\subsection*{Visual Analysis from Plots:}
+\begin{itemize}
+    \item \textbf{Fit Plot:} The model appears to fit the data points very well, as the curve closely follows the data points across the entire temperature range.
+    \item \textbf{Residuals Plot:} The residuals are very small and appear randomly distributed around zero, which supports the high \(R^2\) value and indicates a good fit without obvious patterns of model misspecification.
+\end{itemize}
+
+Therefore, while the model fits the data well, the uncertainty in \(b_0\) requires careful handling, particularly in practical applications or extrapolations beyond the range of data provided.
+
+
+
+
+
+\end{document}
