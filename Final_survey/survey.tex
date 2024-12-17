@@ -1,0 +1,225 @@
+\documentclass[10pt]{IEEEtran}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{cite}
+
+\begin{document}
+
+\title{A Survey of Root-Finding Algorithms in Numerical Computing: Emphasis on the Durand-Kerner Method}
+
+\author{\IEEEauthorblockN{Raja Katheti}
+\IEEEauthorblockA{University of Colorado at Colorado Springs\\
+Email: rkanthet@uccs.edu}}
+
+\maketitle
+
+\begin{abstract}
+Root-finding algorithms are fundamental tools in numerical computing, providing solutions to equations of the form $f(x) = 0$\cite{qureshiNewOptimalRootfinding2024}.This paper surveys prominent root-finding techniques, including classical approaches like the Bisection Method and Newton-Raphson Method, as well as polynomial-specific algorithms such as the Durand-Kerner Method. Emphasizing the Durand-Kerner Method, this paper explores its simultaneous iteration approach for finding all roots of a polynomial, highlighting its strengths, limitations, and applications. Comparative analyses of convergence rates, computational complexity, and practical performance are also presented. This survey aims to provide insights into the evolving landscape of root-finding algorithms, addressing their challenges and potential advancements.
+\end{abstract}
+
+
+
+\section{Introduction}
+% Placeholder for the introduction section.
+Root-finding algorithms play a critical role in numerical computing, addressing the fundamental problem of solving equations of the form $f(x) = 0$. These algorithms are widely applied across various domains, including engineering, physics, and computer science, to model real-world phenomena and solve practical problems. 
+
+This paper presents a comprehensive survey of root-finding algorithms, beginning with an overview of classical single-variable methods such as the Bisection Method, Newton-Raphson Method, and Secant Method. These techniques are foundational and well-suited for specific problem settings but often face limitations when extended to more complex equations or systems. 
+
+The focus then shifts to polynomial root-finding, where specialized algorithms, including the Durand-Kerner Method, have been developed to address the unique challenges posed by polynomials. The Durand-Kerner Method, in particular, offers a robust approach for simultaneously finding all roots of a polynomial, making it a valuable tool in numerical analysis. 
+
+This paper highlights the strengths and limitations of these algorithms, with an emphasis on their convergence behavior, computational efficiency, and practical applications. Additionally, a comparative analysis of different methods is provided to offer insights into their relative performance and applicability.
+
+The structure of this paper is as follows: Section II provides an overview of classical root-finding methods, Section III delves into polynomial-specific algorithms with a detailed examination of the Durand-Kerner Method, and Section IV discusses comparative analyses and applications. Section V concludes with challenges and future directions in root-finding research.
+
+
+
+\section{Relevant Background}
+Root-finding algorithms are a cornerstone of numerical computing, addressing the problem of solving equations of the form $f(x) = 0$. These algorithms have evolved over centuries, starting from simple analytical methods to sophisticated numerical approaches designed for complex systems and polynomials.
+
+\subsection{Historical Development of Root-Finding Algorithms}
+The study of root-finding traces back to ancient mathematics, where solutions to linear and quadratic equations were derived algebraically. Over time, numerical methods were developed to approximate roots of higher-degree equations and transcendental functions. Key milestones include:
+\begin{itemize}
+    \item Newton-Raphson Method (17th Century): One of the earliest iterative methods for finding roots using derivatives.
+    \item Weierstrass-Durand-Kerner Method (19th-20th Century): An algorithm designed to compute all roots of a polynomial simultaneously.
+    \item Modern Numerical Techniques: Development of methods like the Secant Method, Jenkins-Traub Algorithm, and companion matrix approaches, which leverage computational efficiency.
+\end{itemize}
+
+\subsection{Challenges in Root-Finding}
+Finding the roots of functions, particularly polynomials, poses several challenges:
+\begin{itemize}
+    \item Multiple Roots: Numerical methods often struggle with convergence near multiple or clustered roots.
+    \item High-Degree Polynomials: Ill-conditioning becomes a significant issue as the degree of the polynomial increases.
+    \item Complex Roots: Many methods require extensions to the complex plane, increasing computational complexity.
+    \item Sensitivity to Initial Guesses: Iterative methods such as Newton-Raphson and Durand-Kerner depend heavily on the choice of initial approximations.
+\end{itemize}
+
+\subsection{Fundamental Concepts in Numerical Root-Finding}
+Numerical root-finding relies on several key concepts:
+\begin{itemize}
+    \item Bracketing vs. Open Methods: Bracketing methods (e.g., Bisection) guarantee convergence but are slower, while open methods (e.g., Newton-Raphson) are faster but not always reliable.
+    \item Convergence Rate: Measures how quickly a method approaches the root. Quadratic convergence (e.g., Newton-Raphson) is faster than linear convergence (e.g., Bisection).
+    \item Stability and Accuracy: Stability ensures robustness to small perturbations in inputs, while accuracy determines how close the computed root is to the actual root.
+\end{itemize}
+
+This background provides the necessary foundation to explore the nuances of classical and polynomial-specific root-finding methods, as discussed in the subsequent sections.
+
+
+
+\section{Overview of Classical Root-Finding Methods}
+Root-finding methods can be broadly categorized into classical single-variable approaches and polynomial-specific algorithms. This section examines three foundational methods: Bisection Method, Newton-Raphson Method, and Fixed-Point Iteration. These methods are well-documented in the literature\cite{NumericalRootFindingAlgorithms2024, petkovicComputersMathematicalResearch2020}.
+
+\subsection{Bisection Method}
+The Bisection Method is a bracketing method based on the Intermediate Value Theorem. Given a continuous function $f(x)$ and an interval $[a, b]$ where $f(a)f(b) < 0$, the method iteratively halves the interval to approximate the root. This approach is simple and guarantees convergence under appropriate conditions\cite{NumericalRootFindingAlgorithms2024}.
+
+Algorithmically, the midpoint $c = (a + b)/2$ is evaluated at each step. If $f(c) = 0$, $c$ is the root; otherwise, the interval is halved based on the sign of $f(c)$. Despite its robustness, the Bisection Method converges linearly, making it slower than derivative-based methods\cite{petkovicComputersMathematicalResearch2020}.
+
+\subsection{Newton-Raphson Method}
+The Newton-Raphson Method employs the derivative of $f(x)$ to iteratively refine an initial guess $x_0$. Using the formula
+\begin{equation}
+    x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)},
+\end{equation}
+it achieves quadratic convergence near the root\cite{NumericalRootFindingAlgorithms2024}. This rapid convergence makes it popular in scenarios where $f'(x)$ can be efficiently computed\cite{petkovicComputersMathematicalResearch2020}.
+
+However, the method has limitations. It requires an accurate initial guess and can fail if $f'(x_n)$ is close to zero. Additionally, it is sensitive to the function's behavior, potentially diverging in non-convex regions\cite{NumericalRootFindingAlgorithms2024}.
+
+\subsection{Fixed-Point Iteration}
+Fixed-Point Iteration transforms the root-finding problem $f(x) = 0$ into the equivalent form $x = g(x)$, iterating using the formula $x_{n+1} = g(x_n)$. Convergence is guaranteed if $|g'(x)| < 1$ near the root\cite{NumericalRootFindingAlgorithms2024}. While simple, its convergence is typically linear, and finding a suitable $g(x)$ can be challenging\cite{petkovicComputersMathematicalResearch2020}.
+
+\subsection{Secant Method}
+The Secant Method bridges the gap between Newton-Raphson and derivative-free approaches. By approximating the derivative with finite differences, it iterates as:
+\begin{equation}
+    x_{n+1} = x_n - f(x_n) \cdot \frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}.
+\end{equation}
+This method is faster than Bisection and avoids the explicit computation of $f'(x)$\cite{NumericalRootFindingAlgorithms2024}.
+
+\section{Durand-Kerner Method: A Detailed Examination}
+The Durand-Kerner Method, also known as the Weierstrass method, is a polynomial-specific root-finding algorithm designed to compute all roots of a polynomial simultaneously. This method is iterative and relies on refining approximations of all roots at each step. 
+
+\subsection{Overview of the Method}
+Given a polynomial of degree $n$:
+\begin{equation}
+    P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0,
+\end{equation}
+the goal is to find all roots $x_1, x_2, \dots, x_n$. The Durand-Kerner Method uses an iterative process to refine an initial set of guesses for the roots, converging toward the true roots.
+
+\subsection{Algorithm and Formula}
+The algorithm starts with an initial set of approximations $x_1^{(0)}, x_2^{(0)}, \dots, x_n^{(0)}$ for the roots, where the superscript denotes the iteration number. These initial guesses should be distinct and reasonably spread out in the complex plane to ensure convergence.
+
+The iterative update formula for each root $x_k$ is given by:
+\begin{equation}
+    x_k^{(n+1)} = x_k^{(n)} - \frac{P(x_k^{(n)})}{\prod_{j \neq k} (x_k^{(n)} - x_j^{(n)})},
+\end{equation}
+where:
+\begin{itemize}
+    \item $P(x_k^{(n)})$ is the value of the polynomial at the current guess $x_k^{(n)}$.
+    \item $\prod_{j \neq k} (x_k^{(n)} - x_j^{(n)})$ is the product of differences between $x_k^{(n)}$ and all other root guesses.
+\end{itemize}
+
+\subsection{Intuition Behind the Method}
+The Durand-Kerner Method works by treating the polynomial as a product of linear factors:
+\begin{equation}
+    P(x) = a_n \prod_{k=1}^n (x - x_k).
+\end{equation}
+Each iteration adjusts the guess $x_k$ by dividing the residual error $P(x_k)$ by the product of the distances to all other guesses. This approach isolates the influence of each root and updates $x_k$ to a more accurate position.
+
+Key Intuition
+- Error Correction: At each step, the method computes the error at $x_k$ using $P(x_k)$ and distributes corrections based on the proximity to other guesses. Closer roots influence the update more strongly.
+- Simultaneous Updates: Unlike other methods that refine one root at a time, Durand-Kerner updates all guesses simultaneously, leveraging interactions between roots.
+- Convergence: The iterations bring the guesses closer to the true roots as long as the initial guesses are well-distributed and the polynomial is well-conditioned.
+
+\subsection{Convergence and Challenges}
+The Durand-Kerner Method is known for its quadratic convergence in most cases. However, its performance depends on the following factors:
+\begin{itemize}
+    \item Initial Guesses: Poor initial guesses can lead to divergence or slow convergence. A common choice is to place the guesses uniformly around a circle in the complex plane.
+    \item Multiple Roots: Convergence slows significantly for polynomials with multiple or clustered roots, as the influence of one root on others increases.
+    \item High-Degree Polynomials: For high-degree polynomials, the sensitivity to initial guesses and numerical stability becomes more pronounced.
+\end{itemize}
+
+\subsection{Practical Example}
+Consider the polynomial:
+\begin{equation}
+    P(x) = x^3 - 6x^2 + 11x - 6,
+\end{equation}
+whose roots are $x = 1, 2, 3$. Using the Durand-Kerner Method:
+\begin{enumerate}
+    \item Start with initial guesses: $x_1^{(0)} = 1 + 0i$, $x_2^{(0)} = -1 + i$, $x_3^{(0)} = -1 - i$.
+    \item Compute $P(x_k^{(n)})$ for each guess and update using the iteration formula.
+    \item Repeat until $|x_k^{(n+1)} - x_k^{(n)}| < \epsilon$, where $\epsilon$ is a chosen tolerance.
+\end{enumerate}
+
+\section{When to Use the Durand-Kerner Method}
+The Durand-Kerner Method is a specialized algorithm for finding all roots of a polynomial simultaneously. Its suitability depends on the specific requirements and characteristics of the polynomial being solved. This section outlines scenarios where the method is particularly advantageous and highlights cases where alternative methods may be more appropriate.
+
+\subsection{Scenarios Where Durand-Kerner Excels}
+\paragraph{1. Finding All Roots Simultaneously}
+The Durand-Kerner Method is specifically designed to compute all roots (real and complex) of a polynomial at once. This makes it ideal for problems where:
+\begin{itemize}
+    \item All roots are required for further analysis, such as in system stability or signal processing.
+    \item Polynomials arise in applications like control theory, resonance frequency calculations, and filter design.
+\end{itemize}
+
+\paragraph{2. Moderate-Degree Polynomials}
+The method works best for polynomials of moderate degree, typically ranging from 3 to 20. For these cases, it offers a balance of efficiency and robustness.
+
+\paragraph{3. Well-Conditioned Polynomials}
+Durand-Kerner performs well when the polynomial:
+\begin{itemize}
+    \item Has roots that are reasonably spaced apart.
+    \item Does not exhibit extreme ill-conditioning or numerical instability.
+\end{itemize}
+
+\paragraph{4. Good Initial Guesses Available}
+The method requires a set of initial guesses for the roots. When these guesses:
+\begin{itemize}
+    \item Are distinct and spread across the complex plane (e.g., uniformly distributed around a circle),
+    \item Are close to the actual roots,
+\end{itemize}
+convergence is typically faster and more reliable.
+
+\paragraph{5. Parallelizable Computation}
+The Durand-Kerner Method can benefit from modern computational resources. The simultaneous nature of the root updates makes it suitable for parallel implementations, significantly reducing computation time for high-degree polynomials when GPU or multi-core processors are available.
+
+\subsection{Scenarios Where Other Methods May Be Preferable}
+\paragraph{1. High-Degree Polynomials}
+For polynomials of degree greater than 20–30, the sensitivity to initial guesses and numerical instability can lead to unreliable results. In such cases, alternatives like the Jenkins-Traub Algorithm or matrix-based methods (e.g., Companion Matrix Method) are recommended.\cite{reinkeWeierstrassDurandKerner2022,kotsireasSurveyMethodsSolving2022}
+
+\paragraph{2. Polynomials with Multiple or Clustered Roots}
+The Durand-Kerner Method may converge slowly or fail altogether when dealing with:
+\begin{itemize}
+    \item Multiple roots (roots with multiplicity greater than one).
+    \item Roots that are closely clustered, leading to numerical interference.
+\end{itemize}
+Specialized modifications or alternative methods like Newton-Raphson variants are better suited for such cases.
+
+\paragraph{3. Single Root Required}
+If the problem requires only one root (e.g., the largest or smallest real root), simpler and more efficient methods like the Newton-Raphson Method, Secant Method, or Bisection Method should be used.
+
+\subsection{Strengths of the Durand-Kerner Method}
+\begin{itemize}
+    \item Simultaneously finds all roots of the polynomial, making it ideal for stability analysis and eigenvalue problems.
+    \item Handles complex roots naturally without requiring additional extensions.
+    \item Quadratic convergence for well-conditioned polynomials and appropriate initial guesses.
+\end{itemize}
+
+\subsection{Modifications and Variants}
+Several modifications of the Durand-Kerner Method have been proposed to improve convergence and handle specific challenges:
+\begin{itemize}
+    \item Real Root Focus: Techniques to refine real roots more efficiently, such as those proposed by Terui and Sasaki\cite{teruiDurandKernerMethodReal2002}.
+    \item Handling Multiple Roots: Adjustments to maintain quadratic convergence for polynomials with multiple roots\cite{fraigniaudDurandKernerPolynomialsRootsfinding1991}.
+    \item Parallel Implementations: Modern parallelization techniques using GPUs have significantly accelerated the computation of roots for high-degree polynomials\cite{ghidoucheParallelImplementationDurandKerner2014}.
+\end{itemize}
+
+\subsection{Applications}
+The Durand-Kerner Method is particularly effective for:
+\begin{itemize}
+    \item Finding all roots simultaneously, making it suitable for stability analysis in control systems.
+    \item Polynomials with moderate degrees, where it achieves robust convergence.
+    \item Applications in physics and engineering, such as resonance frequency analysis and signal processing.
+\end{itemize}
+
+
+\nocite{*}
+\bibliography{root_finding.bib}
+\bibliographystyle{IEEEtran}
+\end{document}

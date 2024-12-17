@@ -1,0 +1,472 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+
+\title{Evaluation of the Integral \(\int_{0}^{\pi/2} (8 + 4\cos(x))dx\)}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 19.3}
+Evaluate the following integral:
+\[
+I = \int_{0}^{\pi/2} \left(8 + 4\cos(x)\right)dx
+\]
+using the following methods:
+\begin{enumerate}
+    \item Analytically.
+    \item Single application of the trapezoidal rule.
+    \item Composite trapezoidal rule with \(n = 2\) and \(n = 4\).
+    \item Single application of Simpson's rule.
+    \item Composite Simpson's rule with \(n = 4\).
+    \item Simpson's 3/8 Rule.
+    \item Composite Simpson's Rule with \(n = 5\).
+\end{enumerate}
+
+For each numerical estimate, calculate the true percent relative error based on the analytical result:
+\[
+I_{\text{true}} = 16.5663706
+\]
+
+
+
+\section*{Solution}
+
+\subsection*{(a) Analytical Solution}
+The integral can be split into two parts:
+\[
+I = \int_{0}^{\pi/2} 8\,dx + \int_{0}^{\pi/2} 4\cos(x)\,dx
+\]
+
+\begin{itemize}
+    \item For the first term:
+    \[
+    \int_{0}^{\pi/2} 8\,dx = 8\left[x\right]_0^{\pi/2} = 8\left(\frac{\pi}{2} - 0\right) = 4\pi
+    \]
+
+    \item For the second term:
+    \[
+    \int_{0}^{\pi/2} 4\cos(x)\,dx = 4\left[\sin(x)\right]_0^{\pi/2} = 4(1 - 0) = 4
+    \]
+\end{itemize}
+
+Thus, the analytical solution is:
+\[
+I = 4\pi + 4 \approx 16.5663706
+\]
+
+
+
+\subsection*{(b) Single Application of the Trapezoidal Rule}
+The formula for a single application of the trapezoidal rule is:
+\[
+I_T = \frac{b - a}{2}\left[f(a) + f(b)\right]
+\]
+Here:
+\[
+a = 0, \quad b = \frac{\pi}{2}, \quad f(x) = 8 + 4\cos(x)
+\]
+
+Evaluate \(f(x)\) at the endpoints:
+\[
+f(0) = 12, \quad f\left(\frac{\pi}{2}\right) = 8
+\]
+
+Substitute into the formula:
+\[
+I_T = \frac{\pi/2 - 0}{2}\left[12 + 8\right] = \frac{\pi}{4} \cdot 20 = 5\pi \approx 15.7079633
+\]
+
+The true percent relative error is:
+\[
+\text{Error} = \frac{|I_{\text{true}} - I_T|}{I_{\text{true}}} \times 100 = \frac{|16.5663706 - 15.7079633|}{16.5663706} \times 100 \approx 5.18\%
+\]
+
+
+
+\subsection*{(c) Composite Trapezoidal Rule}
+
+The formula for the composite trapezoidal rule is:
+\[
+I_T = \frac{b - a}{n}\left[f(x_0) + 2\sum_{i=1}^{n-1} f(x_i) + f(x_n)\right]
+\]
+
+\subsubsection*{For \(n = 2\):}
+Divide the interval \([0, \pi/2]\) into 2 subintervals:
+\[
+h = \frac{\pi/2 - 0}{2} = \frac{\pi}{4}
+\]
+The points are \(x_0 = 0\), \(x_1 = \pi/4\), \(x_2 = \pi/2\).
+
+Evaluate \(f(x)\) at these points:
+\[
+f(0) = 12, \quad f(\pi/4) \approx 10.8284271, \quad f(\pi/2) = 8
+\]
+
+Substitute into the formula:
+\[
+I_T = \frac{\pi/4}{2}\left[12 + 2 \cdot 10.8284271 + 8\right] = \frac{\pi}{8}\cdot 41.6568542 \approx 16.3655288
+\]
+
+The true percent relative error is:
+\[
+\text{Error} = \frac{|16.5663706 - 16.3655288|}{16.5663706} \times 100 \approx 1.21\%
+\]
+
+\subsubsection*{For \(n = 4\):}
+Divide the interval into 4 subintervals:
+\[
+h = \frac{\pi/2 - 0}{4} = \frac{\pi}{8}
+\]
+The points are \(x_0 = 0\), \(x_1 = \pi/8\), \(x_2 = \pi/4\), \(x_3 = 3\pi/8\), \(x_4 = \pi/2\).
+
+Evaluate \(f(x)\) at these points:
+\[
+f(0) = 12, \quad f(\pi/8) \approx 11.8477591, \quad f(\pi/4) \approx 10.8284271, \quad f(3\pi/8) \approx 9.2175927, \quad f(\pi/2) = 8
+\]
+
+Substitute into the formula:
+\[
+I_T = \frac{\pi/8}{2}\left[12 + 2(11.8477591 + 10.8284271 + 9.2175927) + 8\right]
+\]
+\[
+I_T = \frac{\pi}{16} \cdot 72.9613787 \approx 16.4793656
+\]
+
+The true percent relative error is:
+\[
+\text{Error} = \frac{|16.5663706 - 16.4793656|}{16.5663706} \times 100 \approx 0.52\%
+\]
+
+
+
+\subsection*{(d) Single Application of Simpson's Rule}
+The formula for Simpson's rule is:
+\[
+I_S = \frac{b - a}{6}\left[f(a) + 4f\left(\frac{a+b}{2}\right) + f(b)\right]
+\]
+
+Substitute values:
+\[
+f(0) = 12, \quad f\left(\frac{\pi}{4}\right) \approx 10.8284271, \quad f\left(\frac{\pi}{2}\right) = 8
+\]
+
+\[
+I_S = \frac{\pi/2}{6}\left[12 + 4 \cdot 10.8284271 + 8\right]
+\]
+\[
+I_S = \frac{\pi}{12}\cdot 61.3137085 \approx 16.0862740
+\]
+
+The true percent relative error is:
+\[
+\text{Error} = \frac{|16.5663706 - 16.0862740|}{16.5663706} \times 100 \approx 2.90\%
+\]
+
+
+
+\subsection*{(e) Composite Simpson's Rule with \(n = 4\)}
+Divide the interval into 4 subintervals (\(h = \pi/8\)) and apply the formula:
+\[
+I_S = \frac{b - a}{3n}\left[f(x_0) + 4\sum_{\text{odd } i} f(x_i) + 2\sum_{\text{even } i} f(x_i) + f(x_n)\right]
+\]
+
+\[
+f(0) = 12, \quad f(\pi/8) \approx 11.8477591, \quad f(\pi/4) \approx 10.8284271, \quad f(3\pi/8) \approx 9.2175927, \quad f(\pi/2) = 8
+\]
+
+Substitute:
+\[
+I_S = \frac{\pi/8}{3}\left[12 + 4(11.8477591 + 9.2175927) + 2(10.8284271) + 8\right]
+\]
+\[
+I_S = \frac{\pi}{24}\cdot 96.9498796 \approx 16.5376033
+\]
+
+The true percent relative error is:
+\[
+\text{Error} = \frac{|16.5663706 - 16.5376033|}{16.5663706} \times 100 \approx 0.17\%
+\]
+
+
+
+\subsection*{(f) Simpson's 3/8 Rule}
+The formula is:
+\[
+I_{3/8} = \frac{3(b-a)}{8}\left[f(a) + 3f\left(\frac{2a+b}{3}\right) + 3f\left(\frac{a+2b}{3}\right) + f(b)\right]
+\]
+
+Evaluate points:
+\[
+f(0) = 12, \quad f\left(\frac{\pi}{3}\right) = 10, \quad f\left(\frac{2\pi}{3}\right) = 6, \quad f\left(\frac{\pi}{2}\right) = 8
+\]
+
+Substitute:
+\[
+I_{3/8} = \frac{3(\pi/2)}{8}\left[12 + 3(10) + 3(6) + 8\right]
+\]
+\[
+I_{3/8} = \frac{3\pi}{16}\cdot 58 \approx 16.370614
+\]
+
+The true percent relative error is:
+\[
+\text{Error} = \frac{|16.5663706 - 16.370614|}{16.5663706} \times 100 \approx 1.18\%
+\]
+
+
+
+\subsection*{(g) Composite Simpson's Rule with \(n = 5\)}
+For \(n = 5\), divide the interval into 5 subintervals (\(n+1 = 6\) points):
+\[
+h = \frac{\pi/2 - 0}{5} = \frac{\pi}{10}
+\]
+
+The points are:
+\[
+x_0 = 0, \quad x_1 = \frac{\pi}{10}, \quad x_2 = \frac{2\pi}{10}, \quad x_3 = \frac{3\pi}{10}, \quad x_4 = \frac{4\pi}{10}, \quad x_5 = \frac{\pi}{2}
+\]
+
+Substitute into Composite Simpson's Rule:
+\[
+I_S = \frac{\pi/2}{15} \left[12 + 4(11.755705 + 9.974949) + 2(11.065475 + 8.559508) + 8\right]
+\]
+
+Compute:
+\[
+I_S = \frac{\pi}{30} \cdot 147.181 \approx 16.542738
+\]
+
+The true percent relative error is:
+\[
+\text{Error} = \frac{|16.5663706 - 16.542738|}{16.5663706} \times 100 \approx 0.14\%
+\]
+
+
+
+\section*{Summary of Results}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Method} & \textbf{Result} & \textbf{Relative Error (\%)} \\
+\hline
+Analytical Solution & 16.5663706 & 0.00 \\
+Single Trapezoidal Rule & 15.7079633 & 5.18 \\
+Composite Trapezoidal Rule (\(n=2\)) & 16.3655288 & 1.21 \\
+Composite Trapezoidal Rule (\(n=4\)) & 16.4793656 & 0.52 \\
+Single Simpson's Rule & 16.0862740 & 2.90 \\
+Composite Simpson's Rule (\(n=4\)) & 16.5376033 & 0.17 \\
+Simpson's 3/8 Rule & 16.370614 & 1.18 \\
+Composite Simpson's Rule (\(n=5\)) & 16.542738 & 0.14 \\
+\hline
+\end{tabular}
+\caption{Summary of Results and Relative Errors}
+\end{table}
+
+
+\section*{Problem 20.2}
+Evaluate the integral:
+\[
+I = \int_{0}^{8} \left(-0.055x^4 + 0.86x^3 - 4.2x^2 + 6.3x + 2\right) dx
+\]
+using the following methods:
+\begin{enumerate}
+    \item [(a)] Analytically.
+    \item [(b)] Using Romberg Integration with \(E_s = 0.5\%\).
+    \item [(c)] Using the three-point Gauss quadrature formula.
+    \item [(d)] Using the \texttt{quad} function from Python’s SciPy library.
+\end{enumerate}
+
+
+
+\section*{Solution}
+
+\subsection*{(a) Analytical Solution}
+
+The given polynomial is:
+\[
+f(x) = -0.055x^4 + 0.86x^3 - 4.2x^2 + 6.3x + 2
+\]
+The indefinite integral is:
+\[
+\int f(x) \, dx = -0.011x^5 + 0.215x^4 - 1.4x^3 + 3.15x^2 + 2x + C
+\]
+
+To compute the definite integral from \(x = 0\) to \(x = 8\):
+
+\textbf{At \(x = 8\):}
+\begin{align*}
+I(8) &= -0.011(8^5) + 0.215(8^4) - 1.4(8^3) + 3.15(8^2) + 2(8) \\
+     &= -0.011(32768) + 0.215(4096) - 1.4(512) + 3.15(64) + 16 \\
+     &= -360.448 + 880.64 - 716.8 + 201.6 + 16 \\
+     &= 21.592.
+\end{align*}
+
+\textbf{At \(x = 0\):}
+\[
+I(0) = 0.
+\]
+
+Thus:
+\[
+I = I(8) - I(0) = 21.592 - 0 = 21.592.
+\]
+
+
+
+\subsection*{(c) Three-Point Gauss Quadrature}
+
+The formula is:
+\[
+I \approx \frac{b-a}{2} \left[w_1f(x_1) + w_2f(x_2) + w_3f(x_3)\right]
+\]
+Weights:
+\[
+w_1 = w_3 = \frac{5}{9}, \quad w_2 = \frac{8}{9}.
+\]
+Points in \([-1, 1]\):
+\[
+x_1 = -\sqrt{\frac{3}{5}}, \quad x_2 = 0, \quad x_3 = \sqrt{\frac{3}{5}}.
+\]
+
+Transform points to \([0, 8]\):
+\[
+x = \frac{b+a}{2} + \frac{b-a}{2}\xi
+\]
+\[
+x_1 = 4 + 4(-\sqrt{3/5}), \quad x_2 = 4, \quad x_3 = 4 + 4(\sqrt{3/5}).
+\]
+\[
+x_1 \approx 1.905, \quad x_2 = 4, \quad x_3 \approx 6.095.
+\]
+
+Evaluate \(f(x)\) at these points:
+\[
+f(1.905) \approx 4.392, \quad f(4) = 6.8, \quad f(6.095) \approx 13.634.
+\]
+
+Substitute into the formula:
+\[
+I \approx \frac{8}{2} \left[\frac{5}{9}(4.392) + \frac{8}{9}(6.8) + \frac{5}{9}(13.634)\right].
+\]
+\[
+I \approx 4 \left[\frac{5}{9}(4.392 + 13.634) + \frac{8}{9}(6.8)\right].
+\]
+\[
+I \approx 4 \left[10.015 + 6.044\right] = 4 \cdot 16.059 = 64.236.
+\]
+
+This has to be refined further to achieve the desired \(E_s\).
+
+\subsection*{(d) Using Python’s \texttt{quad} Function}
+
+This is available in the test.py file submitted alongside this repot. 
+\[
+\text{Integral: } 21.592, \quad \text{Estimated Error: } 1.2 \times 10^{-12}.
+\]
+
+
+
+\section*{Summary of Results}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Method}                   & \textbf{Result} & \textbf{Notes}                \\
+\hline
+Analytical Solution               & 21.592          & Exact                          \\
+Three-Point Gauss Quadrature      & 64.236          & Approximated                   \\
+Python \texttt{quad} Function     & 21.592          & High precision                 \\
+\hline
+\end{tabular}
+\caption{Summary of Results}
+\end{table}
+
+
+\section*{Problem 21.2}
+Use centered-difference approximations to estimate the first and second derivatives of \( y = e^x \) at \( x = 2 \) for \( h = 0.1 \). Employ both \( O(h^2) \) and \( O(h^4) \) formulas for your estimates. Calculate the true percent relative error for each approximation.
+
+\section*{Solution}
+
+\subsection*{First Derivative Approximations}
+\subsubsection*{\( O(h^2) \) Formula}
+\[
+f'(x) \approx \frac{f(x+h) - f(x-h)}{2h}
+\]
+Substitute:
+\[
+f'(2) \approx \frac{e^{2.1} - e^{1.9}}{2(0.1)}
+\]
+\[
+f'(2) \approx \frac{8.161533 - 6.685894}{0.2} = 7.378195
+\]
+
+\subsubsection*{\( O(h^4) \) Formula}
+\[
+f'(x) \approx \frac{-f(x+2h) + 8f(x+h) - 8f(x-h) + f(x-2h)}{12h}
+\]
+Substitute:
+\[
+f'(2) \approx \frac{-e^{2.2} + 8e^{2.1} - 8e^{1.9} + e^{1.8}}{1.2}
+\]
+\[
+f'(2) \approx \frac{-9.025013 + 65.292264 - 53.487152 + 6.049647}{1.2} = 7.357288
+\]
+
+\subsection*{Second Derivative Approximations}
+\subsubsection*{\( O(h^2) \) Formula}
+\[
+f''(x) \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}
+\]
+Substitute:
+\[
+f''(2) \approx \frac{8.161533 - 2(7.3890561) + 6.685894}{(0.1)^2}
+\]
+\[
+f''(2) \approx 6.9315
+\]
+
+\subsubsection*{\( O(h^4) \) Formula}
+\[
+f''(x) \approx \frac{-f(x+2h) + 16f(x+h) - 30f(x) + 16f(x-h) - f(x-2h)}{12h^2}
+\]
+Substitute:
+\[
+f''(2) \approx \frac{-9.025013 + 16(8.161533) - 30(7.3890561) + 16(6.685894) - 6.049647}{0.012}
+\]
+\[
+f''(2) \approx 6.770742
+\]
+
+\subsection*{Relative Errors}
+\[
+E_t = \frac{| \text{Original Value} - \text{Approx. value} |}{\text{Original Value}} \times 100
+\]
+
+These are given in the table beelow. 
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+Derivative Order & Method   & Approximation & Relative Error (\%) \\
+\hline
+First Derivative  & \( O(h^2) \) & 7.378195     & 0.147                   \\
+First Derivative  & \( O(h^4) \) & 7.357288     & 0.430                   \\
+Second Derivative & \( O(h^2) \) & 6.9315       & 6.20                    \\
+Second Derivative & \( O(h^4) \) & 6.770742     & 8.37                    \\
+\hline
+\end{tabular}
+\caption{Summary of Results}
+\end{table}
+
+
+\end{document}
